@@ -67,7 +67,7 @@ const submitBtnClick = () => {
   // Check if the entered captcha text is correct or not
   if (captchaInputBox.value === captchaText) {
       document.getElementById("captcha_user_input").value="";
-    document.getElementById("login_form").submit();
+      document.getElementById("login_form").submit();
 
 
   } else {

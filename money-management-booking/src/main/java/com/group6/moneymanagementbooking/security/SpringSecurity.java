@@ -42,7 +42,7 @@ public class SpringSecurity {
 
         @Bean
         public static PasswordEncoder passwordEncoder() {
-                return new BCryptPasswordEncoder(15);
+                return new BCryptPasswordEncoder();
         }
 
         @Bean
@@ -82,9 +82,7 @@ public class SpringSecurity {
                                                                         session.setAttribute("userFullName", users
                                                                                         .getFirstName() + " "
                                                                                         + users.getLastName());
-                                                                        users.setFailed_attempt(0);
-                                                                        users.setNonLocked(true);
-                                                                        usersRepository.save(users);
+                                
                                                                         Collection<? extends GrantedAuthority> authorities = authentication
                                                                                         .getAuthorities();
                                                                         for (GrantedAuthority grantedAuthority : authorities) {
