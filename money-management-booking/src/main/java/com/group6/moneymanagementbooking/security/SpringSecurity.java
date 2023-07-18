@@ -22,6 +22,7 @@ import com.group6.moneymanagementbooking.enity.Users;
 import com.group6.moneymanagementbooking.exception.CustomAuthenticationFailureHandler;
 import com.group6.moneymanagementbooking.repository.UsersRepository;
 import com.group6.moneymanagementbooking.service.AccountsService;
+import com.group6.moneymanagementbooking.service.UsersService;
 import com.group6.moneymanagementbooking.service.impl.UsersServiceImpl;
 
 @Configuration
@@ -36,6 +37,9 @@ public class SpringSecurity {
 
         @Autowired
         private UsersServiceImpl usersServiceImpl;
+
+        @Autowired
+        private UsersService usersService;
 
         @Autowired
         private AccountsService accountsService;
@@ -105,7 +109,7 @@ public class SpringSecurity {
                                                                 .permitAll())
                                 .rememberMe().key("Axncmvi2002")
                                 .tokenValiditySeconds(60 * 60 * 24 * 10 * 30);
-                http.addFilterBefore(new BeforeAuthenticationFilter(accountsService),
+                http.addFilterBefore(new BeforeAuthenticationFilter(accountsService,usersService),
                                 UsernamePasswordAuthenticationFilter.class);
                 return http.build();
         }
