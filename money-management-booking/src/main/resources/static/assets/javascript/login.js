@@ -1,4 +1,3 @@
-
 function report(error, turn) {
   if (error !== null) {
     if (error == "login-fail") {

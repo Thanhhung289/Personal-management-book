@@ -131,8 +131,6 @@
             <div class="login_top">
                 <header>ODB Login</header>
             </div>
-
-
             <form id="login_form" th:action="@{/login}" th:object="${usersDTOLoginRequest}" method="POST">
                 <div class="login_input-field ">
                     <input type="text" class="input" placeholder="Email" name="email" th:field="*{email}">
@@ -143,10 +141,7 @@
                     <input type="Password" class="input" placeholder="Password" name="password" th:field="*{password}">
                     <i class='ti-lock'></i>
                 </div>
-
-
-
-
+              
                 <p style="margin-bottom: 12px;" id="remember-me">
                     <input id="btn-remember-me" type="checkbox" name="remember-me">
                     Remember me?&nbsp;
@@ -155,16 +150,12 @@
                 <div class="login_input-field captcha_button ">
                     <button type="submit" class="login_submit" value="Login">Login</button>
                 </div>
-                <div class="login_input-field" style="display: flex; flex-wrap: wrap; justify-content: center;">
+              
+              <div class="login_input-field" style="display: flex; flex-wrap: wrap; justify-content: center;">
                     <div class="g-recaptcha " style="margin-bottom: 48px;"
                         th:attr="data-sitekey=6LfMaukiAAAAABd36Sv2HGjfv4Rs9IYWXT8aYoyq"></div>
-
                 </div>
-
-
-
             </form>
-
             <div class="login_two-col">
                 <div class="login_one">
                     <label><a href="homepage.jsp">Homepage</a></label>
@@ -177,10 +168,8 @@
                 </div>
             </div>
         </div>
-
+      
         <script th:src="@{/assets/javascript/login.js}"></script>
-
-
 </body>
 
 </html>

@@ -13,6 +13,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
 
@@ -25,8 +26,7 @@ public class BeforeAuthenticationFilter extends OncePerRequestFilter {
     public BeforeAuthenticationFilter(AccountsService accountsService, UsersService usersServiceImpl) {
         this.accountsService = accountsService;
         this.usersService = usersServiceImpl;
-    }
-
+      
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -37,8 +37,6 @@ public class BeforeAuthenticationFilter extends OncePerRequestFilter {
             Users u = usersService.getUserByEmail(email);
             request.setAttribute("userFullName", u.getFirstName() + " " + u.getLastName());
         }
-
-        // Tiếp tục xử lý các filter và controller tiếp theo
         filterChain.doFilter(request, response);
     }
 }
