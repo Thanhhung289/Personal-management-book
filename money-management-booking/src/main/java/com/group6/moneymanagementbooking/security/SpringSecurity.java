@@ -26,11 +26,29 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 
 public class SpringSecurity {
+<<<<<<< HEAD
         private final CustomUserDetailsService userDetailsService;
         private final UsersRepository usersRepository;
         private final UsersServiceImpl usersServiceImpl;
         private final UsersService usersService;
         private final AccountsService accountsService;
+=======
+
+        @Autowired
+        private CustomUserDetailsService userDetailsService;
+
+        @Autowired
+        private UsersRepository usersRepository;
+
+        @Autowired
+        private UsersServiceImpl usersServiceImpl;
+
+        @Autowired
+        private UsersService usersService;
+
+        @Autowired
+        private AccountsService accountsService;
+>>>>>>> c8ef1a87016b02e4dcfc4b5f30f1d7894b08a518
 
         @Bean
         public static PasswordEncoder passwordEncoder() {
@@ -65,6 +83,7 @@ public class SpringSecurity {
                                                 .mvcMatchers("/login").permitAll()
                                                 .mvcMatchers("/admins/**").hasRole("ADMIN")
                                                 .anyRequest().authenticated()
+<<<<<<< HEAD
                                 ).formLogin(form -> form.loginPage("/login")
                                                 .usernameParameter("email")
                                                 .passwordParameter("password")
@@ -76,6 +95,50 @@ public class SpringSecurity {
                                 .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll())
                                 .rememberMe().key("Axncmvi2002")
                                 .tokenValiditySeconds(60 * 60 * 24 * 10 * 30);
+=======
+
+                                ).formLogin(
+                                                form -> form
+                                                                .loginPage("/login")
+                                                                .usernameParameter("email")
+                                                                .passwordParameter("password")
+                                                                .failureUrl("/login?error=true")
+                                                                .failureHandler(authenticationFailureHandler())
+                                                                .defaultSuccessUrl("/", false)
+                                                                .successHandler((request, response, authentication) -> {
+                                                                        String email = request.getParameter("email");
+                                                                        Users users = usersRepository.findByEmail(email)
+                                                                                        .get();
+                                                                        HttpSession session = request.getSession();
+                                                                        session.setAttribute("userFullName", users
+                                                                                        .getFirstName() + " "
+                                                                                        + users.getLastName());
+                                
+                                                                        Collection<? extends GrantedAuthority> authorities = authentication
+                                                                                        .getAuthorities();
+                                                                        for (GrantedAuthority grantedAuthority : authorities) {
+                                                                                if (grantedAuthority.getAuthority()
+                                                                                                .equals("ROLE_ADMIN")) {
+                                                                                        response.sendRedirect(
+                                                                                                        "/admins/home");
+                                                                                }
+                                                                                if (grantedAuthority.getAuthority()
+                                                                                                .equals("ROLE_USER")) {
+                                                                                        response.sendRedirect(
+                                                                                                        "/users/overview");
+                                                                                }
+                                                                        }
+                                                                }).permitAll())
+                                .logout(
+                                                logout -> logout
+                                                                .logoutRequestMatcher(
+                                                                                new AntPathRequestMatcher("/logout"))
+                                                                .permitAll())
+                                .rememberMe().key("Axncmvi2002")
+                                .tokenValiditySeconds(60 * 60 * 24 * 10 * 30);
+                http.addFilterBefore(new BeforeAuthenticationFilter(accountsService,usersService),
+                                UsernamePasswordAuthenticationFilter.class);
+>>>>>>> c8ef1a87016b02e4dcfc4b5f30f1d7894b08a518
                 return http.build();
         }
         @Autowired

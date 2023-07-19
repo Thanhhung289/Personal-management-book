@@ -1,8 +1,4 @@
 
-
-// Generate a captcha when the page loads
-generateCaptcha();
-
 function report(error, turn) {
   if (error !== null) {
     if (error == "login-fail") {

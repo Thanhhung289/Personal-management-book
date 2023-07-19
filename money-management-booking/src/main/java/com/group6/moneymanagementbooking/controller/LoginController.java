@@ -49,7 +49,7 @@ public class LoginController {
     @PostMapping("/register")
     public String registerPost(RedirectAttributes redirectAttributes, HttpServletRequest request,
             @ModelAttribute("usersDTORegister") UsersDTORegisterRequest userDTORegister) throws Exception {
-        List<String> report = new ArrayList();
+        List<String> report = new ArrayList<String>();
         userService.checkUserRegister(report, userDTORegister, request);
         if (report.size() > 0) {
             redirectAttributes.addAttribute("error", report);
