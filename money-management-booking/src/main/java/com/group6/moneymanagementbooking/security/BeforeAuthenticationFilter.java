@@ -26,7 +26,7 @@ public class BeforeAuthenticationFilter extends OncePerRequestFilter {
     public BeforeAuthenticationFilter(AccountsService accountsService, UsersService usersServiceImpl) {
         this.accountsService = accountsService;
         this.usersService = usersServiceImpl;
-      
+    }
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
