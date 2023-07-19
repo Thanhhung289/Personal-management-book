@@ -89,7 +89,7 @@ public class SettingController {
             @ModelAttribute("userDTOEditProfile") UserDTOEditProfileRequest userDTOEditProfile,
             HttpServletRequest request)
             throws Exception {
-        String report = "success";
+        String report = "Update success!!";
         try {
             usersService.updateInfo(userDTOEditProfile, request);
         } catch (Exception exception) {

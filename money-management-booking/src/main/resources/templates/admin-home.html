@@ -19,32 +19,37 @@
 
 <body>
     <div id="mainContent" class="box-admin">
+        
         <section class="admin_table-header">
             <h1 id="table-header">Group Of Users Information</h1>
             <div class="admin_data-contact">
                 <div class="admin_search">
                     <label id="lbSearch" for="admin_txtSearch">Search</label>
-                    <input type="text" name="txtSearch" id="admin_txtSearch" placeholder="search">
+                    <input type="text" name="txtSearch" id="admin_txtSearch" placeholder="search" th:value="${searchValue}">
                     <select name="sltSearch" id="admin_sltSearch">
-                        <option value="select">Select</option>
-                        <option value="name">Name </option>
-                        <option value="email">Email </option>
-                        <option value="phone">Phone </option>
+                        <option value="select" th:selected="${select == 'select'}">Select</option>
+                        <option value="name" th:selected="${select == 'name'}">Name</option>
+                        <option value="email" th:selected="${select == 'email'}">Email</option>
+                        <option value="phone" th:selected="${select == 'phone'}">Phone</option>
                     </select>
                     <button id="admin_btnSearch">Search</button>
                     <button id="admin_btnReload">Re-load</button>
                 </div>
                 <div class="listBy">
                     List by:
+
+                    <input type="text" style="display: none;" th:value="${data3}" id="status">
+                    <input type="text" style="display: none;" th:value="${data4}" id="lock">
+<!-- 
                     <input type="text" style="display: none;" th:value="${data3}" id="isStatusPage">
                     <input type="text" style="display: none;" th:value="${data4}" id="isLockPage">
                     <input type="text" style="display: none;" th:value="${data5}" id="status">
-                    <input type="text" style="display: none;" th:value="${data6}" id="lock">
+                    <input type="text" style="display: none;" th:value="${data6}" id="lock"> -->
 
-                    <button id="admin_btnActiveList" th:text="${data5} ? 'Active':'De-Active' "
-                        th:class="${data5} ? 'positive-status' : 'negative-status' "></button>
-                    <button id="admin_btnLockedList" th:text="${data6} ?   'None-lock':'Lock' "
-                        th:class="${data6} ? 'positive-status' : 'negative-status' "></button>
+                    <button id="admin_btnActiveList" th:text="${data3} ? 'Active':'De-Active' "
+                        th:class="${data3} ? 'positive-status' : 'negative-status' "></button>
+                    <button id="admin_btnLockedList" th:text="${data4} ?  'None-lock':'Lock' "
+                        th:class="${data4} ? 'positive-status' : 'negative-status' "></button>
 
                 </div>
             </div>
@@ -52,15 +57,15 @@
         <section th:replace="layout/admin-table :: table-users(${data})">
         </section>
         <div id="pagination">
-            <button id="admin_firstPage" onclick="goToFirstPage()" disabled><i class="fa-solid fa-backward-fast" style="color: whitesmoke; font-size: 12px;"></i></button>
-            <button id="admin_previousPage" onclick="goToPreviousPage()" disabled><i class="fa-solid fa-caret-left" style="color: whitesmoke; font-size: 16px;"></i></i></button>
+            <button id="admin_firstPage"  disabled><i class="fa-solid fa-backward-fast" style="color: whitesmoke; font-size: 12px;"></i></button>
+            <button id="admin_previousPage" disabled><i class="fa-solid fa-caret-left" style="color: whitesmoke; font-size: 16px;"></i></i></button>
             <input type="number" id="admin_goToPageInput" min="1" th:max="${data2}" th:value="${data1}">
             <label id="lbPageInput" for="goToPageInput" th:text="'of '+${data2}">
 
             </label>
             <button id="admin_goToPageButton" onclick="goToPage()">Go</button>
-            <button id="admin_nextPage" onclick="goToNextPage()"><i class="fa-solid fa-caret-right" style="color: whitesmoke; font-size: 16px;"></i></button>
-            <button id="admin_lastPage" onclick="goToLastPage()"><i class="fa-solid fa-forward-fast" style="color: whitesmoke; font-size: 12px;"></i></button>
+            <button id="admin_nextPage" ><i class="fa-solid fa-caret-right" style="color: whitesmoke; font-size: 16px;"></i></button>
+            <button id="admin_lastPage"><i class="fa-solid fa-forward-fast" style="color: whitesmoke; font-size: 12px;"></i></button>
             <input id="admin_totalPages" style="display: none;" type="text" th:value="${data2}">
         </div>
     </div>

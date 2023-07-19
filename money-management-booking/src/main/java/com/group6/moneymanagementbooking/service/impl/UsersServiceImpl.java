@@ -2,7 +2,6 @@ package com.group6.moneymanagementbooking.service.impl;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +16,6 @@ import org.springframework.ui.Model;
 import com.group6.moneymanagementbooking.dto.mapper.UsersMapper;
 import com.group6.moneymanagementbooking.dto.request.UserDTOEditProfileRequest;
 import com.group6.moneymanagementbooking.dto.request.UsersDTOForgotPasswordRequest;
-import com.group6.moneymanagementbooking.dto.request.UsersDTOLoginRequest;
 import com.group6.moneymanagementbooking.dto.request.UsersDTORegisterRequest;
 import com.group6.moneymanagementbooking.enity.Users;
 import com.group6.moneymanagementbooking.repository.UsersRepository;
@@ -39,10 +37,26 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void checkUserRegister(List<String> report, UsersDTORegisterRequest userDTORegister,
             HttpServletRequest request) throws Exception {
-        registerCheckCondition(userDTORegister, report);
-        if (report.size() == 0) {
-            HttpSession session = request.getSession();
+        String pass = userDTORegister.getPassword();
+        if (checkEmailDuplicate(userDTORegister.getEmail())) {
+            report.add("This email already exits!!");
+        }
+        if (!StringUtils.isValidEmail(userDTORegister.getEmail())) {
+            report.add("This email is not valid!!");
+        }
+        if (!StringUtils.checkPasswordValidate(pass)) {
+            report.add("Password must conform to regex!!");
+        }
+        if (!userDTORegister.getPhone().isEmpty() &&
+                !StringUtils.isDigit(userDTORegister.getPhone())) {
+            report.add("Phone number must not have character!!");
 
+        }
+        if (!pass.equals(userDTORegister.getRepeatPassword())) {
+            report.add("Password and re-password are not the same!!");
+        }
+        if (pass.isEmpty() || userDTORegister.getRepeatPassword().isEmpty()) {
+            report.add("Password/Re-password cannot be empty!!");
         }
     }
 
@@ -65,6 +79,10 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void updateInfo(UserDTOEditProfileRequest userDTOEditProfile, HttpServletRequest request) throws Exception {
         Optional<Users> usersOptional = usersRepository.findByEmail(userDTOEditProfile.getEmail());
+        if(userDTOEditProfile.getFirstName().isEmpty() || userDTOEditProfile.getLastName().isEmpty()
+         || userDTOEditProfile.getPhone().isEmpty() || userDTOEditProfile.getAddress().isEmpty() ){
+            throw new Exception("Data cannot be empty!!");
+        }
         if (usersOptional.isPresent()) {
             Users users = usersOptional.get();
             users.setAddress(userDTOEditProfile.getAddress());
@@ -132,7 +150,7 @@ public class UsersServiceImpl implements UsersService {
                     || usersDTOForgotPasswordRequest.getRepeatPassword().isEmpty()) {
                 report.add(" Warning: Input can not be empty");
             }
-            if(usersDTOForgotPasswordRequest.getPassword().equals(users.getPassword())){
+            if (usersDTOForgotPasswordRequest.getPassword().equals(users.getPassword())) {
                 report.add(" Warning: This new password is the same with your old password");
             }
             if (report.size() == 0) {
@@ -195,6 +213,7 @@ public class UsersServiceImpl implements UsersService {
             users.setNonLocked(true);
             users.setLockTime(null);
             users.setFailed_attempt(0);
+            usersRepository.save(users);
             return true;
         }
         return false;
@@ -220,30 +239,6 @@ public class UsersServiceImpl implements UsersService {
         return true;
     }
 
-    private void registerCheckCondition(UsersDTORegisterRequest accountDTORegister, List<String> report) {
-        String pass = accountDTORegister.getPassword();
-        if (checkEmailDuplicate(accountDTORegister.getEmail())) {
-            report.add("This email already exits!!");
-        }
-        if (!StringUtils.isValidEmail(accountDTORegister.getEmail())) {
-            report.add("This email is not valid!!");
-        }
-        if (!StringUtils.checkPasswordValidate(pass)) {
-            report.add("Password must conform to regex!!");
-        }
-
-        if (!accountDTORegister.getPhone().isEmpty() &&
-                !StringUtils.isDigit(accountDTORegister.getPhone())) {
-            report.add("Phone number must not have character!!");
-
-        }
-        if (!pass.equals(accountDTORegister.getRepeatPassword())) {
-            report.add("Password and re-password are not the same!!");
-        }
-        if (pass.isEmpty() || accountDTORegister.getRepeatPassword().isEmpty()) {
-            report.add("Password/Re-password cannot be empty!!");
-        }
-    }
 
     @Override
     public Users getUsers() {

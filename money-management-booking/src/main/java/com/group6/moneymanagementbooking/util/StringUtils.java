@@ -31,7 +31,6 @@ public class StringUtils {
     public static boolean checkPasswordValidate(String password) {
         String regex = "^(?=.*[A-Z])(?=.*\\d)[A-Za-z0-9]{6,}$";
         return password.matches(regex);
-
     }
 
     public static boolean isValidEmail(String email) {

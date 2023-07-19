@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@CrossOrigin
 public class LoginController {
     private final UsersService userService;
 
@@ -51,7 +49,7 @@ public class LoginController {
     @PostMapping("/register")
     public String registerPost(RedirectAttributes redirectAttributes, HttpServletRequest request,
             @ModelAttribute("usersDTORegister") UsersDTORegisterRequest userDTORegister) throws Exception {
-        List<String> report = new ArrayList();
+        List<String> report = new ArrayList<String>();
         userService.checkUserRegister(report, userDTORegister, request);
         if (report.size() > 0) {
             redirectAttributes.addAttribute("error", report);

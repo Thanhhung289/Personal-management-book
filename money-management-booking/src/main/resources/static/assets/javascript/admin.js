@@ -6,8 +6,6 @@ var lastPageButton = document.getElementById("admin_lastPage");
 
 var currentPageSpan = document.getElementById("admin_goToPageInput").value;
 var totalPages = document.getElementById("admin_totalPages").value;
-var isLockedUserPage = document.getElementById("isLockPage").value;
-var isStatusUserPage = document.getElementById("isStatusPage").value;
 var locked = document.getElementById("lock").value;
 var active = document.getElementById("status").value;
 var selection = document.getElementById("admin_sltSearch").value;
@@ -44,21 +42,23 @@ function goToPage() {
     let goToPageInput = document.getElementById("admin_goToPageInput").value;
     let pageNumber = parseInt(goToPageInput);
     let url = "/admins/home/page" + pageNumber;
-    if (isLockedUserPage == "true") {
+    if (locked != "") {
         let isLockedList = (locked == "true");
         if (selection === "select") {
             url = "/admins/list-locked/page" + pageNumber + "/?nonlocked=" + !isLockedList;
         } else {
-            window.location = "/admins/search/page" + pageNumber + "?select=" + selection + "&value=" + searchValue + "&nonlocked=" + isLockedList;
+            window.location = "/admins/search/page" + pageNumber + "?select=" + selection + "&value=" + searchValue + "&nonlocked=" + !isLockedList;
         }
-    } else if (isStatusUserPage == "true") {
+    }
+    if (active != "") {
         let isActiveList = (active == "true");
         if (selection === "select") {
             url = "/admins/list-status/page" + pageNumber + "/?isactive=" + !isActiveList;
         } else {
-            window.location = "/admins/search/page" + pageNumber + "/?select=" + selection + "&value=" + searchValue + "&isactive=" + isActiveList;
+            window.location = "/admins/search/page" + pageNumber + "/?select=" + selection + "&value=" + searchValue + "&isactive=" + !isActiveList;
         }
-    } else if (isLockedUserPage != "true" && isStatusUserPage != "true") {
+    }
+    if (locked == "" && active == "") {
         if (selection === "select") {
 
         } else {
@@ -90,22 +90,24 @@ function renderPagination() {
 
 
 firstPageButton.addEventListener("click", function (event) {
-    if (isLockedUserPage == "true") {
+    if (locked != "") {
         let isLockedList = (locked == "true");
         if (selection === "select") {
             window.location = "/admins/list-locked/page" + 1 + "/?nonlocked=" + !isLockedList;
         } else {
-            window.location = "/admins/search/page" + 1 + "/?select=" + selection + "&value=" + searchValue + "&nonlocked=" + isLockedList;
+            window.location = "/admins/search/page" + 1 + "/?select=" + selection + "&value=" + searchValue + "&nonlocked=" + !isLockedList;
 
         }
-    } else if (isStatusUserPage == "true") {
+    }
+    if (active != "") {
         let isActiveList = (active == "true");
         if (selection === "select") {
             window.location = "/admins/list-status/page" + 1 + "/?isactive=" + !isActiveList;
         } else {
-            window.location = "/admins/search/page" + 1 + "/?select=" + selection + "&value=" + searchValue + "&isactive=" + isActiveList;
+            window.location = "/admins/search/page" + 1 + "/?select=" + selection + "&value=" + searchValue + "&isactive=" + !isActiveList;
         }
-    } else if (isLockedUserPage != "true" && isStatusUserPage != "true") {
+    }
+    if (locked == "" && active == "") {
         if (selection === "select") {
             window.location = "/admins/home/page" + 1;
         } else {
@@ -115,22 +117,24 @@ firstPageButton.addEventListener("click", function (event) {
 });
 
 lastPageButton.addEventListener("click", function (event) {
-    if (isLockedUserPage == "true") {
+    if (locked != "") {
         let isLockedList = (locked == "true");
         if (selection === "select") {
             window.location = "/admins/list-locked/page" + totalPages + "/?nonlocked=" + !isLockedList;
         } else {
-            window.location = "/admins/search/page" + totalPages + "/?select=" + selection + "&value=" + searchValue + "&nonlocked=" + isLockedList;
+            window.location = "/admins/search/page" + totalPages + "/?select=" + selection + "&value=" + searchValue + "&nonlocked=" + !isLockedList;
 
         }
-    } else if (isStatusUserPage == "true") {
+    }
+    if (active != "") {
         let isActiveList = (active == "true");
         if (selection === "select") {
             window.location = "/admins/list-status/page" + totalPages + "/?isactive=" + !isActiveList;
         } else {
-            window.location = "/admins/search/page" + totalPages + "/?select=" + selection + "&value=" + searchValue + "&isactive=" + isActiveList;
+            window.location = "/admins/search/page" + totalPages + "/?select=" + selection + "&value=" + searchValue + "&isactive=" + !isActiveList;
         }
-    } else if (isLockedUserPage != "true" && isStatusUserPage != "true") {
+    }
+    if (locked == "" && active == "") {
         if (selection === "select") {
             window.location = "/admins/home/page" + totalPages;
         } else {
@@ -141,21 +145,23 @@ lastPageButton.addEventListener("click", function (event) {
 
 nextPageButton.addEventListener("click", function (event) {
     let nextPage = parseInt(currentPageSpan) + 1;
-    if (isLockedUserPage == "true") {
+    if (locked != "") {
         let isLockedList = (locked == "true");
         if (selection === "select") {
             window.location = "/admins/list-locked/page" + nextPage + "/?nonlocked=" + !isLockedList;
         } else {
-            window.location = "/admins/search/page" + nextPage + "/?select=" + selection + "&value=" + searchValue + "&nonlocked=" + isLockedList;
+            window.location = "/admins/search/page" + nextPage + "/?select=" + selection + "&value=" + searchValue + "&nonlocked=" + !isLockedList;
         }
-    } else if (isStatusUserPage == "true") {
+    }
+    if (active != "") {
         let isActiveList = (active == "true");
         if (selection === "select") {
             window.location = "/admins/list-status/page" + nextPage + "/?isactive=" + !isActiveList;
         } else {
-            window.location = "/admins/search/page" + nextPage + "/?select=" + selection + "&value=" + searchValue + "&isactive=" + isActiveList;
+            window.location = "/admins/search/page" + nextPage + "/?select=" + selection + "&value=" + searchValue + "&isactive=" + !isActiveList;
         }
-    } else if (isLockedUserPage != "true" && isStatusUserPage != "true") {
+    }
+    if (locked == "" && active == "") {
         if (selection === "select") {
             window.location = "/admins/home/page" + nextPage;
         } else {
@@ -166,22 +172,24 @@ nextPageButton.addEventListener("click", function (event) {
 
 previousPageButton.addEventListener("click", function (event) {
     let previous = parseInt(currentPageSpan) - 1;
-    if (isLockedUserPage == "true") {
+    if (locked != "") {
         let isLockedList = (locked == "true");
         if (selection === "select") {
             window.location = "/admins/list-locked/page" + previous + "/?nonlocked=" + !isLockedList;
         } else {
-            window.location = "/admins/search/page" + previous + "/?select=" + selection + "&value=" + searchValue + "&nonlocked=" + isLockedList;
+            window.location = "/admins/search/page" + previous + "/?select=" + selection + "&value=" + searchValue + "&nonlocked=" + !isLockedList;
 
         }
-    } else if (isStatusUserPage == "true") {
+    }
+    if (active != "") {
         let isActiveList = (active == "true");
         if (selection === "select") {
             window.location = "/admins/list-status/page" + previous + "/?isactive=" + !isActiveList;
         } else {
-            window.location = "/admins/search/page" + previous + "/?select=" + selection + "&value=" + searchValue + "&isactive=" + isActiveList;
+            window.location = "/admins/search/page" + previous + "/?select=" + selection + "&value=" + searchValue + "&isactive=" + !isActiveList;
         }
-    } else if (isLockedUserPage != "true" && isStatusUserPage != "true") {
+    }
+    if (locked == "" && active == "") {
         if (selection === "select") {
             window.location = "/admins/home/page" + previous;
         } else {
@@ -199,21 +207,23 @@ var searchButton = document.getElementById("admin_btnSearch");
 searchButton.addEventListener("click", function (event) {
     var searchBy = selectElement.value;
     let value = document.getElementById("admin_txtSearch").value;
-    if (isLockedUserPage == "true") {
-        let isLockedList = (locked == "true");
+    if (locked != "") {
+        let isLockedList = (locked == "false");
         if (searchBy == "select") {
-            window.location = "/admins/list-locked/?nonlocked=" + !isLockedList;
+            window.location = "/admins/list-locked/?nonlocked=" + isLockedList;
         } else {
             window.location = "/admins/search/?select=" + searchBy + "&value=" + value + "&nonlocked=" + isLockedList;
         }
-    } else if (isStatusUserPage == "true") {
-        let isActiveList = (active == "true");
+    }
+    if (active != "") {
+        let isActiveList = (active == "false");
         if (searchBy == "select") {
-            window.location = "/admins/list-status/?isactive=" + !isActiveList;
+            window.location = "/admins/list-status/?isactive=" + isActiveList;
         } else {
             window.location = "/admins/search/?select=" + searchBy + "&value=" + value + "&isactive=" + isActiveList;
         }
-    } else if (isLockedUserPage != "true" && isStatusUserPage != "true") {
+    } 
+    if (locked == "" && active == "") {
         if (searchBy == "select") {
             window.location = "/admins/home";
         }
@@ -244,8 +254,3 @@ window.addEventListener('beforeunload', function (event) {
 
 });
 
-window.addEventListener('DOMContentLoaded', function (event) {
-    if (localStorage.getItem('selection') !== null) {
-        selectElement.value = localStorage.getItem('selection');
-    }
-});
