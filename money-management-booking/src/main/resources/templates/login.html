@@ -5,6 +5,8 @@
     <title>Login</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js" th:inline="javascript"></script>
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=site_key"></script>
     <script src="https://kit.fontawesome.com/de1d9009fe.js" crossorigin="anonymous"></script>
     <link th:href='@{/assets/themify-icons-font/themify-icons/themify-icons.css}' rel='stylesheet'>
     <link rel="stylesheet" th:href="@{/assets/css/login.css}">
@@ -25,6 +27,7 @@
             pointer-events: none;
             display: none;
         }
+
         .alert.showAlert {
             opacity: 1;
             display: block;
@@ -110,7 +113,6 @@
             font-size: 22px;
             line-height: 40px;
         }
-   
     </style>
 </head>
 
@@ -118,7 +120,7 @@
 
     <div class="alert alert_hide">
         <span class="fas fa-exclamation-circle"></span>
-        <p class="alert_msg" id="report" ></p>
+        <p class="alert_msg" id="report"></p>
         <div class="alert_close-btn">
             <span class="fas fa-times"></span>
         </div>
@@ -142,33 +144,20 @@
                     <i class='ti-lock'></i>
                 </div>
 
-                <div class="login_input-field captcha_input_box">
 
-                    <div class="capctcha_input-field captch_input">
-                        <input id="captcha_user_input" class="input" placeholder="Enter captcha" />
 
-                    </div>
-                    <div class="capctcha_input-field  captch_box">
-                        <input class="inputt" type="text" value="" disabled />
-                        <button class="captcha_refresh_button" type="button">
-                            <i class='ti-reload'></i>
-                        </button>
-                    </div>
 
-                </div>
-
-                <p style="margin-bottom: 12px;" id="remember-me">
+                <p style="margin-bottom: 12px;" id="remember-me" >
                     <input id="btn-remember-me" type="checkbox" name="remember-me">
                     Remember me?&nbsp;
                 </p>
 
+                <div class="login_input-field captcha_button ">
+                    <button type="submit" class="login_submit" value="Login">Login</button>
+                </div>
+                <div class="login_input-field" style="display: flex; flex-wrap: wrap; justify-content: center;">
+                    <div class="g-recaptcha " style="margin-bottom: 48px;" th:attr="data-sitekey=6LfMaukiAAAAABd36Sv2HGjfv4Rs9IYWXT8aYoyq"></div>
 
-                <p class="login_mess" style="color: red"></p>
-
-
-
-                <div class="login_input-field captcha_button disabled">
-                    <button type="button" class="login_submit" value="Login">Login</button>
                 </div>
 
 
@@ -187,9 +176,9 @@
                 </div>
             </div>
         </div>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js" th:inline="javascript"></script>
 
         <script th:src="@{/assets/javascript/login.js}"></script>
+
 
 </body>
 

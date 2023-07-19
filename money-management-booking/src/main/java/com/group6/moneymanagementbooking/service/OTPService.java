@@ -3,11 +3,7 @@ package com.group6.moneymanagementbooking.service;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.group6.moneymanagementbooking.enity.OTP;
 import com.group6.moneymanagementbooking.repository.OTPRepository;

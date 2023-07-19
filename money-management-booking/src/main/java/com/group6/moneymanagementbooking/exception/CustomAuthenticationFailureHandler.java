@@ -6,11 +6,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 
 import com.group6.moneymanagementbooking.enity.Users;
 import com.group6.moneymanagementbooking.repository.UsersRepository;
@@ -39,19 +46,48 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             AuthenticationException exception) throws IOException, ServletException {
         String username = request.getParameter("email");
         String password = request.getParameter("password");
+        if (username == null || password == null) {
+            response.sendRedirect("/login?error=null");
+            return;
+        }
         try {
-            // Kiểm tra trạng thái isEnabled của người dùng
             MyUserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (userDetails.isEnabled()) {
-                // Xử lý các trường hợp khác khi đăng nhập không thành công
                 Users users = usersRepository.findByEmail(username).get();
-                loginLimitAttem(password, users, request, response, exception);
+                if (users.isNonLocked()) {
+                    if (!passwordEncoder.matches(password, users.getPassword())) {
+                        usersServiceImpl.checkUnLockUser(users, response);
+                    }
+                } else {
+                    if (passwordEncoder.matches(password, users.getPassword())) {
+                        if (usersServiceImpl.unlock(users)) {
+                            String rememberMe = request.getParameter("remember-me");
+                            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
+                                    userDetails.getAuthorities());
+                            SecurityContextHolder.getContext().setAuthentication(authentication);
+                            if (rememberMe != null && rememberMe.equalsIgnoreCase("on")) {
+                                rememberMeServices().loginSuccess(request, response, authentication);
+                            }
+                            for (GrantedAuthority grantedAuthority : userDetails.getAuthorities()) {
+                                if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
+                                    response.sendRedirect("/admins/home");
+                                    return;
+                                } else if (grantedAuthority.getAuthority().equals("ROLE_USER")) {
+                                    response.sendRedirect("/users/overview");
+                                    return;
+                                }
+                            }
+                        } else {
+                            response.sendRedirect("/login?error=login-fail&turn=0");
+                        }
+                    } else {
+                        response.sendRedirect("/login?error=login-fail&turn=0");
+                    }
+                }
             } else {
-                // Người dùng bị vô hiệu hóa
                 response.sendRedirect("/login?error=disabled");
             }
         } catch (UsernameNotFoundException e) {
-            // Người dùng không tồn tại
             response.sendRedirect("/login?error=true");
         } catch (InternalAuthenticationServiceException iase) {
             response.sendRedirect("/login?error=true");
@@ -60,29 +96,11 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         }
     }
 
-    private void loginLimitAttem(String password, Users users, HttpServletRequest request, HttpServletResponse response,
-            AuthenticationException exception) throws IOException, ServletException {
-        if (passwordEncoder.matches(password, users.getPassword())) {
-            if (users.isNonLocked()) {
-                super.onAuthenticationFailure(request, response, exception);
-            } else {
-                if (usersServiceImpl.unlock(users)) {
-                    super.onAuthenticationFailure(request, response, exception);
-                } else {
-                    response.sendRedirect("/login?error=login-fail&turn=0");
-                }
-            }
-        } else {
-            if (users.isNonLocked()) {
-                usersServiceImpl.checkUnLockUser(users, response);
-            } else {
-                if (usersServiceImpl.unlock(users)) {
-                    usersServiceImpl.checkUnLockUser(users, response);
-                } else {
-                    response.sendRedirect("/login?error=login-fail&turn=0");
-                }
-            }
-        }
+    public TokenBasedRememberMeServices rememberMeServices() {
+        TokenBasedRememberMeServices rememberMeServices = new TokenBasedRememberMeServices("Axncmvi2002",
+                userDetailsService);
+        rememberMeServices.setTokenValiditySeconds(60 * 60 * 24 * 10 * 30);
+        return rememberMeServices;
     }
 
 }

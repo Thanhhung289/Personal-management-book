@@ -22,7 +22,7 @@
         <header>
             <div class="main-layout_image-text">
                 <span class="main-layout_image">
-                    <img id="main-layout_logo-project" src="/image/logo.jpg" alt="logo">
+                    <a th:href="@{/users/overview}"><img id="main-layout_logo-project" src="/image/logo.jpg" alt="logo"></a>
                 </span>
                 <div class="main-layout_text main-layout_logo-text">
                     <span class="name">PMM</span>
@@ -87,12 +87,7 @@
                         </a>
                     </li>
 
-                    <li class="main-layout_nav-link">
-                        <a href="#">
-                            <i class="fa-solid fa-circle-info icon"></i>
-                            <span class="main-layout_text main-layout_nav-text">Contact</span>
-                        </a>
-                    </li>
+                    
                 </ul>
             </div>
             <div class="main-layout_bottom-content">
@@ -107,7 +102,7 @@
         </div>
     </nav>
     <div class="main-layout_top-header">
-        <h6> Hi there <span th:text="${session.userFullName}"></span>!
+        <h6> Hi there <span th:text="${userFullName}"></span>!
         </h6>
         <div class="main-layout_total-money"> 
             <i class="fa-solid fa-sack-dollar icon" ></i>

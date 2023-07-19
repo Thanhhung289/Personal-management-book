@@ -1,6 +1,5 @@
 package com.group6.moneymanagementbooking.controller;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.Random;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.mail.EmailException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

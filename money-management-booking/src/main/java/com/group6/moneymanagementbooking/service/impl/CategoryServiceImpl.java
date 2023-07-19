@@ -38,7 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
                 throw new Exception("Name cannot be null");
             return categoryRepository.save(category);
         } catch (Exception e) {
-            model.addAttribute("mess", e.getMessage());
+            model.addAttribute("report", e.getMessage());
         }
         return null;
     }
