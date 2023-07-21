@@ -19,13 +19,9 @@ public class StringUtils {
                 .matches();
     }
 
-    public static boolean isDigit(String str) {
-        try {
-            Integer.parseInt(str);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
+    public static boolean checkPhone(String str) {
+        String regex = "^(\\d{10,13})$";
+        return str.matches(regex);
     }
 
     public static boolean checkPasswordValidate(String password) {

@@ -22,6 +22,7 @@ import com.group6.moneymanagementbooking.enity.OTP;
 import com.group6.moneymanagementbooking.service.EmailService;
 import com.group6.moneymanagementbooking.service.OTPService;
 import com.group6.moneymanagementbooking.service.UsersService;
+import com.group6.moneymanagementbooking.util.NumberUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,17 +41,13 @@ public class OTPController {
         HttpSession session = request.getSession();
         if (session.getAttribute("emailOTP") != null) {
             String email = (String) session.getAttribute("emailOTP");
-            int otpCode = 0;
-            Random rand = new Random();
-            otpCode = rand.nextInt(1000000);
+            int otpCode = NumberUtils.getRandomInt(1000000, 999999);
             String htmlContent = otpService.OTPEmailTemplate(String.valueOf(otpCode));
-            PrintWriter out = response.getWriter();
-
             try {
                 emailService.sendVerifyEmail(email, "Dear MyFriend, ", htmlContent);
                 System.out.println("Mail sent successfully.");
             } catch (EmailException e) {
-                out.println(e.getMessage());
+                 throw new Exception(e.getMessage());
             }
             OTP otp = OTP.builder().date_create(LocalDateTime.now()).email(email).code(String.valueOf(otpCode)).build();
             otpService.saveOTP(otp);

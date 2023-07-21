@@ -9,111 +9,8 @@
     <script src="https://www.google.com/recaptcha/enterprise.js?render=site_key"></script>
     <script src="https://kit.fontawesome.com/de1d9009fe.js" crossorigin="anonymous"></script>
     <link th:href='@{/assets/themify-icons-font/themify-icons/themify-icons.css}' rel='stylesheet'>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link rel="stylesheet" th:href="@{/assets/css/login.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/alert-report.css}">
-    <style>
-        .alert {
-            background: #ffdb9b;
-            padding: 12px 40px;
-            padding-right: 20px;
-            min-width: 360px;
-            position: absolute;
-            right: 0;
-            top: 10px;
-            border-radius: 4px;
-            border-left: 8px solid #ffa502;
-            overflow: hidden;
-            opacity: 0;
-            pointer-events: none;
-            display: none;
-        }
-
-        .alert.showAlert {
-            opacity: 1;
-            display: block;
-            pointer-events: auto;
-        }
-
-        .alert.show {
-            animation: show_slide 1s ease forwards;
-        }
-
-        @keyframes show_slide {
-            0% {
-                transform: translateX(100%);
-            }
-
-            40% {
-                transform: translateX(-10%);
-            }
-
-            80% {
-                transform: translateX(0%);
-            }
-
-            100% {
-                transform: translateX(-10px);
-            }
-        }
-
-        .alert.hide {
-            animation: hide_slide 1s ease forwards;
-        }
-
-        @keyframes hide_slide {
-            0% {
-                transform: translateX(-10px);
-            }
-
-            40% {
-                transform: translateX(0%);
-            }
-
-            80% {
-                transform: translateX(-10%);
-            }
-
-            100% {
-                transform: translateX(100%);
-            }
-        }
-
-        .alert .fa-exclamation-circle {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #ce8500;
-            font-size: 30px;
-        }
-
-        .alert_msg {
-            padding: 12px 20px;
-            font-size: 12px;
-            color: #ce8500;
-
-        }
-
-        .alert .alert_close-btn {
-            position: absolute;
-            right: 0px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #ffd080;
-            padding: 20px 18px;
-            cursor: pointer;
-        }
-
-        .alert .alert_close-btn:hover {
-            background: #ffc766;
-        }
-
-        .alert .alert_close-btn .fas {
-            color: #ce8500;
-            font-size: 22px;
-            line-height: 40px;
-        }
-    </style>
 </head>
 
 <body th:onload="report([[${param.error}]], [[${param.turn}]])">
@@ -129,7 +26,7 @@
         <div class="login_container">
 
             <div class="login_top">
-                <header>ODB Login</header>
+                <header>Login</header>
             </div>
             <form id="login_form" th:action="@{/login}" th:object="${usersDTOLoginRequest}" method="POST">
                 <div class="login_input-field ">
@@ -141,24 +38,24 @@
                     <input type="Password" class="input" placeholder="Password" name="password" th:field="*{password}">
                     <i class='ti-lock'></i>
                 </div>
-              
+
                 <p style="margin-bottom: 12px;" id="remember-me">
                     <input id="btn-remember-me" type="checkbox" name="remember-me">
                     Remember me?&nbsp;
                 </p>
 
+
+                <div class="g-recaptcha" style="margin-bottom: 48px;" data-size="invisible"
+                    th:data-sitekey="${site_key}" data-callback="onSubmit"></div>
+
                 <div class="login_input-field captcha_button ">
-                    <button type="submit" class="login_submit" value="Login">Login</button>
+                    <button type="button" class="login_submit" onclick="formSubmit()" value="Login">Login</button>
                 </div>
-              
-              <div class="login_input-field" style="display: flex; flex-wrap: wrap; justify-content: center;">
-                    <div class="g-recaptcha " style="margin-bottom: 48px;"
-                        th:attr="data-sitekey=6LfMaukiAAAAABd36Sv2HGjfv4Rs9IYWXT8aYoyq"></div>
-                </div>
+
             </form>
             <div class="login_two-col">
                 <div class="login_one">
-                    <label><a href="homepage.jsp">Homepage</a></label>
+                    <label><a href="/homepage">Homepage</a></label>
                 </div>
                 <div class="login_one">
                     <label><a href="/register">Register</a></label>
@@ -168,8 +65,23 @@
                 </div>
             </div>
         </div>
-      
+
         <script th:src="@{/assets/javascript/login.js}"></script>
+        <script th:src="@{/assets/javascript/captchaExcute.js}"></script>
+        <script>
+            function onSubmit() {
+                document.getElementById('login_form').submit();
+            }
+
+            function formSubmit() {
+                const form = document.getElementById('login_form');
+                if (form.checkValidity()) {
+                    grecaptcha.execute();
+                } else {
+                    form.reportValidity();
+                }
+            }
+        </script>
 </body>
 
 </html>

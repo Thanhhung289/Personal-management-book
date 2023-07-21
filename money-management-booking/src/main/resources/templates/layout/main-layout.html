@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/de1d9009fe.js" crossorigin="anonymous"></script>
+    
     <link rel="stylesheet" th:href="@{/assets/css/dashboard.css}">
     <link rel="stylesheet" th:href="@{/assets/css/alert-report.css}">
 
@@ -36,34 +37,34 @@
         <div class="main-layout_menu-bar">
             <div class="main-layout_menu">
                 <ul class="main-layout_menu-links">
-                    <li sec:authorize="hasRole('ROLE_ADMIN')" class="main-layout_nav-link">
+                    <li sec:authorize="hasRole('ROLE_ADMIN')" class="main-layout_nav-link" th:classappend="${#httpServletRequest.requestURI == '/admins/home' ? 'current-nav' : ''}">
                         <a th:href="@{/admins/home}">
                             <i class='fa-solid fa-crown icon'></i>
-                            <span class="main-layout_text main-layout_nav-text">Home</span>
+                            <span class="main-layout_text main-layout_nav-text">Admin</span>
                         </a>
                     </li>
-                    <li class="main-layout_nav-link">
-                        <a th:href="@{/users/overview}">
+                    <li class="main-layout_nav-link" th:classappend="${#httpServletRequest.requestURI == '/users/overview' ? 'current-nav' : ''}">
+                        <a th:href="@{/users/overview}" >
                             <!-- <i class='bx bxs-bar-chart-square icon' ></i> -->
                             <i class="fa-solid fa-wallet icon"></i>
-                            <span class="main-layout_text main-layout_nav-text">Overview</span>
+                            <span class="main-layout_text main-layout_nav-text" >Overview</span>
                         </a>
                     </li>
 
-                    <li class="main-layout_nav-link">
+                    <li class="main-layout_nav-link" th:classappend="${#httpServletRequest.requestURI == '/users/list-budget' ? 'current-nav' : ''}">
                         <a th:href="@{/users/list-budget}">
                             <i class="fa-solid fa-piggy-bank icon"></i>
                             <span class="main-layout_text main-layout_nav-text">Budget</span>
                         </a>
                     </li>
 
-                    <li class="main-layout_nav-link">
+                    <li class="main-layout_nav-link" th:classappend="${#httpServletRequest.requestURI == '/users/list-income' ? 'current-nav' : ''}">
                         <a th:href="@{/users/list-income}">
                             <i class="fa-solid fa-money-bill icon"></i>
                             <span class="main-layout_text main-layout_nav-text">Income</span>
                         </a>
                     </li>
-                    <li class="main-layout_nav-link">
+                    <li class="main-layout_nav-link" th:classappend="${#httpServletRequest.requestURI == '/users/list-expenses' ? 'current-nav' : ''}">
                         <a th:href="@{/users/list-expenses}">
                             <i class="fa-solid fa-money-check-dollar icon"></i>
                             <span class="main-layout_text main-layout_nav-text">Expense</span>
@@ -71,7 +72,7 @@
                     </li>
 
 
-                    <li class="main-layout_nav-link">
+                    <li class="main-layout_nav-link" th:classappend="${#httpServletRequest.requestURI == '/Debtor/ListAll' ? 'current-nav' : ''}">
 
                         <a th:href="@{/Debtor/ListAll}">
                             <i class="fa-solid fa-money-bill-transfer icon"></i>
@@ -80,7 +81,7 @@
                         </a>
                     </li>
 
-                    <li class="main-layout_nav-link">
+                    <li class="main-layout_nav-link" th:classappend="${#httpServletRequest.requestURI.contains('/settings') ? 'current-nav' : ''}">
                         <a th:href="@{/settings/index}">
                             <i class="fa-solid fa-gear icon"></i>
                             <span class="main-layout_text main-layout_nav-text">Setting</span>
@@ -113,7 +114,6 @@
     </section>
     <script th:src="@{/assets/javascript/script.js}"></script>
     <script th:src="@{/assets/javascript/alert-report.js}"></script>
-
     <th:block th:replace="${javascript}">
 
     </th:block>

@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class AdminController {
     private final AdminService adminService;
     private final UsersRepository usersRepository;
-    private final String HOME = "admin-home";
+    private final static String HOME = "admin-home";
 
     @GetMapping(value = { "", "/home", "/index", "/" })
     public String adminHomePage(Model model) {
@@ -97,7 +97,6 @@ public class AdminController {
             throws IOException {
         int id = Integer.parseInt(userId);
         adminService.changeActiveStatus(response, id);
-
     }
 
     @GetMapping("/list-locked")

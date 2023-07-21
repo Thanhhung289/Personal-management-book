@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class EmailService {
 
     @Async
-    public void sendVerifyEmail(String to, String subject, String body) throws EmailException {
+    public void sendVerifyEmail(String to, String subject, String body) throws Exception {
         try {
             HtmlEmail email = new HtmlEmail();
             email.setHostName("smtp.gmail.com");
@@ -23,11 +23,7 @@ public class EmailService {
             email.setHtmlMsg(body);
             email.send();
         } catch (EmailException e) {
-            if (e.getMessage().contains("Invalid Addresses")) {
-                System.out.println("Invalid Addresses");
-            } else {
-                System.out.println("Lỗi gửi email: " + e.getMessage());
-            }
+            throw new Exception(e.getMessage());
         }
 
     }

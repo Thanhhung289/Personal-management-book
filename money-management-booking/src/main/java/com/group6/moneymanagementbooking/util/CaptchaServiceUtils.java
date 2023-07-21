@@ -22,7 +22,6 @@ public class CaptchaServiceUtils {
         RestTemplate captchaTemplate = new RestTemplate();
         ResponseEntity<String> response  = captchaTemplate.postForEntity(RECAPTCHA_API_URL, request, String.class);
         if (response != null && response.getBody() != null && response.getBody().contains("\"success\": true")) {
-            System.out.println(response.getBody());
             return true;
         }
         return false;

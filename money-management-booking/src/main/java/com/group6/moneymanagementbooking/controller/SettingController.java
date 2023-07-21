@@ -100,7 +100,7 @@ public class SettingController {
 
     @PostMapping("/upload-avatar")
     public String uploadAvatar(HttpServletRequest request) {
-        String avatar = (String) request.getParameter("avatar");
+        String avatar = request.getParameter("avatar");
         if (!avatar.isEmpty()) {
             usersService.uploadAvatar(avatar);
             return "redirect:/settings/profile"; // Chuyển hướng về trang profile
@@ -119,7 +119,7 @@ public class SettingController {
     @PostMapping("/change-password")
     public String changePasswordOnPost(Model model, HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        String listPass[] = new String[] { request.getParameter("oldPassword"), request.getParameter("newPassword"),
+        String[] listPass = new String[] { request.getParameter("oldPassword"), request.getParameter("newPassword"),
                 request.getParameter("rePassword") };
         try {
             usersService.checkChangePassword(listPass);

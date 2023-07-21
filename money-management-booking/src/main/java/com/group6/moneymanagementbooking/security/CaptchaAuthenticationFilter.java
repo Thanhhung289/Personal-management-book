@@ -17,12 +17,12 @@ public class CaptchaAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String loginUrl = "/login";
-        if (isLoginRequest(request, loginUrl) && isPostMethod(request)) {
+        String[] captchaVerifyURL = {"/login", "/register", "/forgot-password"};
+        if (isLoginRequest(request, captchaVerifyURL) && isPostMethod(request)) {
             String captchaResponse = request.getParameter("g-recaptcha-response");
 
             if (captchaResponse == null || captchaResponse.isEmpty() || !CaptchaServiceUtils.verify(captchaResponse)) {
-                response.sendRedirect(loginUrl + "?error=captcha");
+                response.sendRedirect(request.getRequestURI() + "?error=captcha");
                 return;
             }
         }
@@ -30,8 +30,13 @@ public class CaptchaAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private boolean isLoginRequest(HttpServletRequest request, String loginUrl) {
-        return loginUrl.equals(request.getRequestURI());
+    private boolean isLoginRequest(HttpServletRequest request, String[] captchaVerifyURL) {
+        for (String string : captchaVerifyURL) {
+            if(string.equals(request.getRequestURI())){
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isPostMethod(HttpServletRequest request) {

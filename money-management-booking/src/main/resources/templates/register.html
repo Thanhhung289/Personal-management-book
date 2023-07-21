@@ -11,6 +11,10 @@
     <script src="https://kit.fontawesome.com/de1d9009fe.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/assets/css/alert-report.css}">
     <link rel="stylesheet" th:href="@{/assets/css/register.css}">
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=site_key"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+
 
 </head>
 
@@ -18,7 +22,7 @@
     <div class="wrapper">
         <div class="inner">
             <!-- <img src="image/image-3.png" alt="" class="image-1"> -->
-            <form th:action="@{/register}" th:object="${usersDTORegister}" method="POST">
+            <form th:action="@{/register}" th:object="${usersDTORegister}" method="POST" id="frmRegister">
                 <h3>New Account?</h3>
                 <div id="emailMess"></div>
                 <div class="form-holder">
@@ -29,34 +33,55 @@
                 <p id="message" class="mess"></p>
                 <div class="form-holder">
                     <span class="lnr lnr-lock"></span>
-                    <input type="password" class="form-control" placeholder="Password" name="password" 
-                    id="password" th:field="*{password}" pattern="^(?=.*[A-Z])(?=.*\d)[A-Za-z0-9]{6,}$" required>
+                    <input type="password" class="form-control" placeholder="Password" name="password" id="password"
+                        th:field="*{password}" pattern="^(?=.*[A-Z])(?=.*\d)[A-Za-z0-9]{6,}$" required>
                 </div>
                 <div class="form-holder">
                     <span class="lnr lnr-lock"></span>
                     <input type="password" name="repeatPassword" id="repeatPassword" th:field="*{repeatPassword}"
                         class="form-control" pattern="^(?=.*[A-Z])(?=.*\d)[A-Za-z0-9]{6,}$"
-                        title="Password must contain at least a captital letter and a number, cannot contain special character" placeholder="Confirm Password" required>
+                        title="Password must contain at least a captital letter and a number, cannot contain special character"
+                        placeholder="Confirm Password" required>
                 </div>
                 <div class="form-holder">
                     <span class="lnr lnr-phone-handset"></span>
-                    <input type="number" class="form-control" placeholder="Phone Number" name="phone" th:field="*{phone}">
+                    <input type="number" class="form-control" placeholder="Phone Number" name="phone"
+                        th:field="*{phone}">
                 </div>
                 <div class="form-holder">
                     <span class="lnr lnr-home"></span>
                     <input type="text" class="form-control" placeholder="Address" name="address" th:field="*{address}">
                 </div>
-       
-                <button type="submit" class="register_submit">Submit</button>   
+                <div class="g-recaptcha" style="margin-bottom: 48px;" data-size="invisible"
+                    th:data-sitekey="${site_key}" data-callback="onSubmit"></div>
+
+                <button type="button" class="register_submit" onclick="formSubmit()">Submit</button>
+
                 <div style="text-align: center; padding: 0; margin: 0; margin-top: 20px;">
-                    <a th:href="@{/login}" style="font-size: 12px;color: black ;text-align: center; margin: 0;">Already have an account??</a>
-                </div>         
+                    <a th:href="@{/login}" style="font-size: 12px;color: black ;text-align: center; margin: 0;">Already
+                        have an account??</a>
+                </div>
             </form>
         </div>
     </div>
     <script th:src="@{/assets/javascript/register.js}"></script>
     <script th:src="@{/assets/javascript/forgot-password.js}"></script>
     <script th:src="@{/assets/javascript/alert-report.js}"></script>
+    <script th:src="@{/assets/javascript/captchaExcute.js}"></script>
+    <script>
+        function onSubmit() {
+            document.getElementById('frmRegister').submit();
+        }
+
+        function formSubmit() {
+            const form = document.getElementById('frmRegister');
+            if (form.checkValidity()) {
+                grecaptcha.execute();
+            } else {
+                form.reportValidity();
+            }
+        }
+    </script>
 
 </body>
 

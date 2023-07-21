@@ -31,13 +31,22 @@ public class UsersServiceImpl implements UsersService {
     private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
     private final int MAX_FAILED_ATTEMPTS = 5;
-    private final long LOCK_TIME_DURATION = 24 * 60 * 60 * 1000;
+    private final int LOCK_TIME_DURATION = 24 * 60 * 60 * 1000;
 
     // register
     @Override
     public void checkUserRegister(List<String> report, UsersDTORegisterRequest userDTORegister,
             HttpServletRequest request) throws Exception {
         String pass = userDTORegister.getPassword();
+        if (userDTORegister.getEmail() == null || userDTORegister.getPassword() == null
+                || userDTORegister.getRepeatPassword() == null) {
+            report.add("Data cannot be null!!");
+            return;
+        }
+        if(userDTORegister.getEmail().isEmpty() || userDTORegister.getPassword().isEmpty() || userDTORegister.getRepeatPassword().isEmpty()){
+            report.add("Data cannot be empty");
+            return;
+        }
         if (checkEmailDuplicate(userDTORegister.getEmail())) {
             report.add("This email already exits!!");
         }
@@ -48,15 +57,11 @@ public class UsersServiceImpl implements UsersService {
             report.add("Password must conform to regex!!");
         }
         if (!userDTORegister.getPhone().isEmpty() &&
-                !StringUtils.isDigit(userDTORegister.getPhone())) {
-            report.add("Phone number must not have character!!");
-
+                !StringUtils.checkPhone(userDTORegister.getPhone())) {
+            report.add("Phone number must conform to regex!!");
         }
         if (!pass.equals(userDTORegister.getRepeatPassword())) {
             report.add("Password and re-password are not the same!!");
-        }
-        if (pass.isEmpty() || userDTORegister.getRepeatPassword().isEmpty()) {
-            report.add("Password/Re-password cannot be empty!!");
         }
     }
 
@@ -79,8 +84,8 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void updateInfo(UserDTOEditProfileRequest userDTOEditProfile, HttpServletRequest request) throws Exception {
         Optional<Users> usersOptional = usersRepository.findByEmail(userDTOEditProfile.getEmail());
-        if(userDTOEditProfile.getFirstName().isEmpty() || userDTOEditProfile.getLastName().isEmpty()
-         || userDTOEditProfile.getPhone().isEmpty() || userDTOEditProfile.getAddress().isEmpty() ){
+        if (userDTOEditProfile.getFirstName().isEmpty() || userDTOEditProfile.getLastName().isEmpty()
+                || userDTOEditProfile.getPhone().isEmpty() || userDTOEditProfile.getAddress().isEmpty()) {
             throw new Exception("Data cannot be empty!!");
         }
         if (usersOptional.isPresent()) {
@@ -135,6 +140,14 @@ public class UsersServiceImpl implements UsersService {
     // forgot_password
     @Override
     public void checkForgotPassword(List<String> report, UsersDTOForgotPasswordRequest usersDTOForgotPasswordRequest) {
+        if(usersDTOForgotPasswordRequest.getPassword() == null || usersDTOForgotPasswordRequest.getRepeatPassword() == null || usersDTOForgotPasswordRequest.getEmail() == null){
+            report.add("Warning: Data cannot be null");
+            return;
+        }
+             if(usersDTOForgotPasswordRequest.getPassword().isEmpty()|| usersDTOForgotPasswordRequest.getRepeatPassword().isEmpty() ){
+            report.add("Warning: Data cannot be empty");
+            return;
+        }
         String email = usersDTOForgotPasswordRequest.getEmail();
         Optional<Users> usersOptional = usersRepository.findByEmail(email);
         if (usersOptional.isPresent()) {
@@ -145,10 +158,6 @@ public class UsersServiceImpl implements UsersService {
             if (!usersDTOForgotPasswordRequest.getPassword()
                     .equals(usersDTOForgotPasswordRequest.getRepeatPassword())) {
                 report.add(" Warning: Password and re-password are not the same");
-            }
-            if (usersDTOForgotPasswordRequest.getPassword().isEmpty()
-                    || usersDTOForgotPasswordRequest.getRepeatPassword().isEmpty()) {
-                report.add(" Warning: Input can not be empty");
             }
             if (usersDTOForgotPasswordRequest.getPassword().equals(users.getPassword())) {
                 report.add(" Warning: This new password is the same with your old password");
@@ -238,7 +247,6 @@ public class UsersServiceImpl implements UsersService {
         }
         return true;
     }
-
 
     @Override
     public Users getUsers() {

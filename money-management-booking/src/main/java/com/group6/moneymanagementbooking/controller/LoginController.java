@@ -18,6 +18,7 @@ import com.group6.moneymanagementbooking.dto.request.UsersDTOForgotPasswordReque
 import com.group6.moneymanagementbooking.dto.request.UsersDTOLoginRequest;
 import com.group6.moneymanagementbooking.dto.request.UsersDTORegisterRequest;
 import com.group6.moneymanagementbooking.service.UsersService;
+import com.group6.moneymanagementbooking.util.CaptchaServiceUtils;
 import com.group6.moneymanagementbooking.util.SecurityUtils;
 import com.group6.moneymanagementbooking.util.WebUtils;
 
@@ -34,15 +35,18 @@ public class LoginController {
         if (!SecurityUtils.getCurrentUsername().equals("anonymousUser")) {
             return "redirect:/users/overview";
         }
+                model.addAttribute("site_key", CaptchaServiceUtils.SITE_KEY);
         model.addAttribute("usersDTOLoginRequest", accountDTOLoginRequest);
         model.addAttribute("report", "");
         return "login";
     }
+
     @GetMapping("/register")
     public String registerGet(Model model, HttpServletRequest request) {
         WebUtils.clearSession(request, "userRegister", "changePassword");
         UsersDTORegisterRequest usersDTORegister = UsersDTORegisterRequest.builder().build();
         model.addAttribute("usersDTORegister", usersDTORegister);
+        model.addAttribute("site_key", CaptchaServiceUtils.SITE_KEY);
         return "register";
     }
 
@@ -51,7 +55,7 @@ public class LoginController {
             @ModelAttribute("usersDTORegister") UsersDTORegisterRequest userDTORegister) throws Exception {
         List<String> report = new ArrayList<String>();
         userService.checkUserRegister(report, userDTORegister, request);
-        if (report.size() > 0) {
+        if (report.isEmpty()) {
             redirectAttributes.addAttribute("error", report);
             return "redirect:/register";
         }
@@ -63,7 +67,8 @@ public class LoginController {
     }
 
     @GetMapping("/find-email")
-    public String findEmail() {
+    public String findEmail(Model model) {
+        model.addAttribute("site_key", CaptchaServiceUtils.SITE_KEY);
         return "find-email";
     }
 

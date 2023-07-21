@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@Order(Ordered.HIGHEST_PRECEDENCE)
+@Order(Ordered.LOWEST_PRECEDENCE)
 
 public class BeforeAuthenticationFilter extends OncePerRequestFilter {
     private AccountsService accountsService;
@@ -31,7 +31,7 @@ public class BeforeAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String email = SecurityUtils.getCurrentUsername();
-        if (email != null) {
+        if (email != null && !email.equals("anonymousUser")) {
             double totalMoney = accountsService.getTotalBalance();
             request.setAttribute("totalMoney", totalMoney);
             Users u = usersService.getUserByEmail(email);
