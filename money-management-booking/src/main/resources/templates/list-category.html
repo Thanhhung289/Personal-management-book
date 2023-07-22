@@ -3,6 +3,7 @@
     ~{::title}, 
     ~{::#admin-static-resource},
     ~{::#admin_javascript},
+    ~{::#pageTitle},
     ~{::#mainContent})">
 
 <head>
@@ -26,6 +27,15 @@
 </head>
 
 <body>
+    <div id="pageTitle">
+        <h1>Categories</h1>
+        <nav>
+            <ol class="breadcrumb" style="cursor: pointer;">
+                <li class="breadcrumb-item">Settingss</li>
+                <li class="breadcrumb-item active"><a th:href="@{/Debtor/ListAll}">Categories</a></li>
+            </ol>
+        </nav>
+    </div>
     <div id="mainContent" class="box">
         <div class="container-fluid row">
             <div class="main col-md-12 ">

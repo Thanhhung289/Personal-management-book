@@ -94,11 +94,6 @@ public class UsersServiceImpl implements UsersService {
             users.setFirstName(userDTOEditProfile.getFirstName());
             users.setLastName(userDTOEditProfile.getLastName());
             users.setPhone(userDTOEditProfile.getPhone());
-            if (!request.getSession().getAttribute("userFullName")
-                    .equals(users.getFirstName() + " " + users.getLastName())) {
-                HttpSession session = request.getSession();
-                session.setAttribute("userFullName", users.getFirstName() + " " + users.getLastName());
-            }
             try {
                 usersRepository.save(users);
             } catch (Exception e) {

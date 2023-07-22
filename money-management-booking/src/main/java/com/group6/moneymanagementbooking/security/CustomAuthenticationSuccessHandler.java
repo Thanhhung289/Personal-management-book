@@ -30,6 +30,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                     .get();
             users.setFailed_attempt(0);
             users.setLockTime(null);
+            users.setLockTime(null);
             usersRepository.save(users);
             Collection<? extends GrantedAuthority> authorities = authentication
                     .getAuthorities();

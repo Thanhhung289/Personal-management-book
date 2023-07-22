@@ -3,6 +3,7 @@
     ~{::title}, 
     ~{::#admin-static-resource},
     ~{::#admin_javascript},
+    ~{::#pageTitle  },
     ~{::#mainContent})">
 
 <head>
@@ -18,8 +19,18 @@
 
 
 <body>
+  <div id="pageTitle">
+    <h1>Dashboard</h1>
+    <nav>
+      <ol class="breadcrumb" style="cursor: pointer;">
+        <li class="breadcrumb-item">Admin</li>
+        <li class="breadcrumb-item active">Dashboard</li>
+      </ol>
+    </nav>
+  </div>
+
     <div id="mainContent" class="box-admin">
-        
+     
         <section class="admin_table-header">
             <h1 id="table-header">Group Of Users Information</h1>
             <div class="admin_data-contact">
@@ -40,13 +51,8 @@
 
                     <input type="text" style="display: none;" th:value="${data3}" id="status">
                     <input type="text" style="display: none;" th:value="${data4}" id="lock">
-<!-- 
-                    <input type="text" style="display: none;" th:value="${data3}" id="isStatusPage">
-                    <input type="text" style="display: none;" th:value="${data4}" id="isLockPage">
-                    <input type="text" style="display: none;" th:value="${data5}" id="status">
-                    <input type="text" style="display: none;" th:value="${data6}" id="lock"> -->
-
-                    <button id="admin_btnActiveList" th:text="${data3} ? 'Active':'De-Active' "
+                    
+                    <button  id="admin_btnActiveList" th:text="${data3} ? 'Active':'De-Active' "
                         th:class="${data3} ? 'positive-status' : 'negative-status' "></button>
                     <button id="admin_btnLockedList" th:text="${data4} ?  'None-lock':'Lock' "
                         th:class="${data4} ? 'positive-status' : 'negative-status' "></button>

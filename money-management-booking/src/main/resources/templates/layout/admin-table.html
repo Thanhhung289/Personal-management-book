@@ -7,8 +7,8 @@
                 <th scope="col">Email</th>
                 <th scope="col">Phone</th>
                 <th scope="col">Failed attempt</th>
-                <th scope="col">Lock</th>
                 <th scope="col">Lock time</th>
+                <th scope="col">Lock</th>
                 <th scope="col">Status</th>
                 <th scope="col">Change Status</th>
             </tr>
@@ -22,11 +22,11 @@
                     <td data-label="Phone" class="admin-center-text" th:text="${user.phone}"></td>
                     <td data-label="Failed attempt" class="admin-center-text" th:text="${user.failedAttempt}">
                     </td>
+                    <td data-label="Lock time" th:text="${user.lockTime}"></td>
                     <td data-label="Lock" th:switch="${user.accountNonLocked}" class="status">
                         <button th:case="true" class="positive-status">Non-lock</button>
                         <button th:case="false" class="negative-status">Lock</button>
                     </td>
-                    <td data-label="Lock time" th:text="${user.lockTime}"></td>
                     <td data-label="Status" th:switch="${user.active}" class="status">
                         <button th:case="true" class="positive-status">Active</button>
                         <button th:case="false" class="negative-status">De-active</button>

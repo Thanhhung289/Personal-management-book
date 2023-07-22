@@ -23,9 +23,6 @@ tr th {
     text-align: center;
 }
 
-.red-row {
-    color: #267e18;
-}
 
 .positive-status,
 .negative-status,
@@ -41,6 +38,8 @@ tr th {
     border-radius: 12px;
     padding: 8px;
     border: 0px;
+    justify-content: center;
+    align-items: center;
 }
 
 #admin_btnReload {
@@ -49,35 +48,13 @@ tr th {
 }
 
 .positive-status {
-    background-color: seagreen;
+    background-color: #DC3545;
 }
 
 .negative-status {
-    background-color: slategrey;
+    background-color: #007BFF;
 }
 
-.disabled-status {
-    padding: 8px 20px;
-    width: auto;
-    color: tomato;
-}
-
-.disabled-status:hover {
-    background-color: blueviolet;
-    color: #fff;
-}
-
-.enabled-status:hover {
-    background-color: blueviolet;
-    color: #fff;
-}
-
-.enabled-status {
-    padding: 8px 20px;
-    width: auto;
-    border: 1px solid #fff;
-    color: green;
-}
 
 
 #pagination {
@@ -213,8 +190,8 @@ tr th {
 
 
 .admin_table th {
-    background-color: black;
-    color: #fff;
+    background-color: #f2f2f2;
+    color: black;
 }
 
 .admin_table tbody tr:nth-child(even) {
@@ -222,7 +199,7 @@ tr th {
 }
 
 .admin_table tbody tr:nth-child(odd) {
-    background-color: #f2f2f2;
+    background-color: white;
 }
 
 .status {
@@ -268,7 +245,7 @@ tr th {
 }
 
 input:checked+.admin_slider {
-    background-color: seagreen;
+    background-color: #28A745;
 }
 
 input:focus+.admin_slider {
@@ -329,7 +306,7 @@ h1 {
     .admin_table-header{
         width: 100%;
         padding: 20px 2%;
-        background-color: silver;
+        background-color: rgba(210, 210, 210, 0.567);
         border-top-left-radius: 40px;
         border-top-right-radius: 40px;
         margin-bottom: 12px;
@@ -429,3 +406,4 @@ h1 {
     margin: auto;
     margin-top: 20px;
 }
+

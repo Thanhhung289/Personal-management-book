@@ -3,6 +3,7 @@
     ~{::title}, 
     ~{::#profile-static-resource},
     ~{::#profile_javascript},
+    ~{::#pageTitle},
     ~{::#mainContent})">
 
 
@@ -22,11 +23,18 @@
 </head>
 
 <body>
+    <div id="pageTitle">
+        <h1>Edit Profile</h1>
+        <nav>
+            <ol class="breadcrumb" style="cursor: pointer;">
+                <li class="breadcrumb-item">Settings</li>
+                <li class="breadcrumb-item active"><a th:href="@{/Debtor/ListAll}">Profile</a></li>
+            </ol>
+        </nav>
+    </div>
+
     <section id="mainContent">
         <div class="container bootstrap snippets bootdey" style="margin-top: 10px;" >
-            <h1 class="text-primary">Edit Profile</h1>
-        
-            <hr>
             <p style="color: red;" th:text="${param.mess}"></p>
             <div class="row">
                 <div class="col-md-3">

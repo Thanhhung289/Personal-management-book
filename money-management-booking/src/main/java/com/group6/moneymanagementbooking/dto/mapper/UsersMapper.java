@@ -10,12 +10,12 @@ import com.group6.moneymanagementbooking.dto.response.UsersForAdminDTOResponse;
 import com.group6.moneymanagementbooking.enity.Users;
 
 public class UsersMapper {
-    public static UsersDTOResponse toUserDTOResponse(Users account) {
-        return UsersDTOResponse.builder().firstName(account.getFirstName()).lastName(account.getLastName())
-                .email(account.getEmail()).phone(account.getPhone()).address(account.getAddress())
-                .role(account.getRole()).isActive(account.isActive()).currency(account.getCurrency())
-                .annuallySpending(account.getAnnuallySpending()).monthlyEarning(account.getMonthlyEarning())
-                .monthlySaving(account.getMonthlySaving()).monthlySpending(account.getMonthlySpending()).build();
+    public static UsersDTOResponse toUserDTOResponse(Users user) {
+        return UsersDTOResponse.builder().fullName(user.getFirstName() +" " +user.getLastName())
+                .email(user.getEmail()).phone(user.getPhone()).address(user.getAddress()).avatar(user.getAvatar())
+                .role(user.getRole()).isActive(user.isActive()).currency(user.getCurrency())
+                .annuallySpending(user.getAnnuallySpending()).monthlyEarning(user.getMonthlyEarning())
+                .monthlySaving(user.getMonthlySaving()).monthlySpending(user.getMonthlySpending()).build();
     }
 
     public static Users toUsers(UsersDTORegisterRequest accountDTORegister) {

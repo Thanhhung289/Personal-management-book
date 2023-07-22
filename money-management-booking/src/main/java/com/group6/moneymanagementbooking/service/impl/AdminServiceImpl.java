@@ -38,7 +38,7 @@ public class AdminServiceImpl implements AdminService {
         if (totalPage == 0)
             page = 1;
         model.addAttribute("data2", totalPage);
-        List<Users> list = usersRepository.findByRole("ROLE_USER",PageRequest.of(page - 1, PAGE_SIZE)).toList();
+        List<Users> list = usersRepository.findByRole("ROLE_USER", PageRequest.of(page - 1, PAGE_SIZE)).toList();
         return UsersMapper.toUsersForAdminDTOResponses(list);
     }
 
@@ -50,7 +50,8 @@ public class AdminServiceImpl implements AdminService {
             page = totalPage;
         if (totalPage == 0)
             page = 1;
-        List<Users> listOfLockedUser = usersRepository.findByNonLocked(islock, PageRequest.of((page - 1), PAGE_SIZE))
+        List<Users> listOfLockedUser = usersRepository
+                .findByNonLockedAndRole(islock, "ROLE_USER", PageRequest.of((page - 1), PAGE_SIZE))
                 .toList();
         model.addAttribute("data2", totalPage);
         return UsersMapper.toUsersForAdminDTOResponses(listOfLockedUser);
@@ -65,7 +66,8 @@ public class AdminServiceImpl implements AdminService {
         }
         if (totalPage == 0)
             page = 1;
-        List<Users> listOfActiveUser = usersRepository.findByActive(isActive, PageRequest.of((page - 1), PAGE_SIZE))
+        List<Users> listOfActiveUser = usersRepository
+                .findByActiveAndRole(isActive, "ROLE_USER", PageRequest.of((page - 1), PAGE_SIZE))
                 .toList();
         model.addAttribute("data2", totalPage);
         return UsersMapper.toUsersForAdminDTOResponses(listOfActiveUser);
@@ -180,7 +182,7 @@ public class AdminServiceImpl implements AdminService {
                         value, isActive, PageRequest.of(page, PAGE_SIZE));
                 break;
         }
-  
+
         if (groupOfUsers == null) {
             model.addAttribute("data2", 0);
             return UsersMapper.toUsersForAdminDTOResponses(new ArrayList<Users>());
@@ -211,19 +213,20 @@ public class AdminServiceImpl implements AdminService {
                 + "<td data-label = 'Email' >" + users.getEmail() + "</td>"
                 + "<td data-label = 'Phone'  class='admin-center-text'>" + users.getPhone() + "</td> \n"
                 + "<td data-label = 'Failed attempt' class='admin-center-text'>" + users.getFailed_attempt()
-                + "</td> \n"
-                + "<td data-label = 'Lock' class='status'> \n";
+                + "</td> \n";
+
+        if (users.getLockTime() != null) {
+            data = data + "<td  data-label = 'Lock time' >" + users.getLockTime() + "</td> \n";
+        } else {
+            data = data + "<td  data-label = 'Lock time' ></td> \n";
+        }
+        data = data + "<td data-label = 'Lock' class='status'> \n";
         if (users.isNonLocked()) {
             data = data + "<button class='positive-status'>Non-lock</button> \n";
         } else {
             data = data + "  <button class='negative-status'>Lock</button> \n";
         }
         data = data + "  </td> \n";
-        if (users.getLockTime() != null) {
-            data = data + "<td  data-label = 'Lock time' >" + users.getLockTime() + "</td> \n";
-        } else {
-            data = data + "<td  data-label = 'Lock time' ></td> \n";
-        }
         data = data + "<td data-label = 'Status' class='status'> \n";
         if (users.isActive()) {
             data = data + " <button class='positive-status'>Active</button> \n";
@@ -267,11 +270,13 @@ public class AdminServiceImpl implements AdminService {
                 break;
             case "active":
                 boolean isActive = value.contains("true");
-                totalRecords = usersRepository.findByActive(isActive, Pageable.ofSize(PAGE_SIZE)).getTotalPages();
+                totalRecords = usersRepository.findByActiveAndRole(isActive, "ROLE_USER", Pageable.ofSize(PAGE_SIZE))
+                        .getTotalPages();
                 break;
             case "locked":
                 boolean isLock = value.contains("true");
-                totalRecords = usersRepository.findByNonLocked(isLock, Pageable.ofSize(PAGE_SIZE)).getTotalPages();
+                totalRecords = usersRepository.findByNonLockedAndRole(isLock, "ROLE_USER", Pageable.ofSize(PAGE_SIZE))
+                        .getTotalPages();
                 break;
         }
 
