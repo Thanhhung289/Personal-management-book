@@ -3,13 +3,14 @@
     ~{::title}, 
     ~{::#admin-static-resource},
     ~{::#admin_javascript},
+    ~{::#pageTitle  },
     ~{::#mainContent})">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Admin Control</title>
     <th:block id="admin-static-resource">
-        
+
         <link rel="stylesheet" th:href="@{/assets/css/admin.css}">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
             integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -18,38 +19,50 @@
 
 
 <body>
+    <div id="pageTitle">
+        <h1>Dashboard</h1>
+        <nav>
+            <ol class="breadcrumb" style="cursor: pointer;">
+                <li class="breadcrumb-item">Admin</li>
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+        </nav>
+    </div>
+
     <div id="mainContent" class="box-admin">
-        
+
         <section class="admin_table-header">
             <h1 id="table-header">Group Of Users Information</h1>
             <div class="admin_data-contact">
                 <div class="admin_search">
                     <label id="lbSearch" for="admin_txtSearch">Search</label>
-                    <input type="text" name="txtSearch" id="admin_txtSearch" placeholder="search" th:value="${searchValue}">
+                    <input type="text" name="txtSearch" id="admin_txtSearch" placeholder="search"
+                        th:value="${searchValue}">
                     <select name="sltSearch" id="admin_sltSearch">
                         <option value="select" th:selected="${select == 'select'}">Select</option>
                         <option value="name" th:selected="${select == 'name'}">Name</option>
                         <option value="email" th:selected="${select == 'email'}">Email</option>
                         <option value="phone" th:selected="${select == 'phone'}">Phone</option>
                     </select>
-                    <button id="admin_btnSearch">Search</button>
-                    <button id="admin_btnReload">Re-load</button>
+                    <div style="display: inline-block;">
+                        <button id="admin_btnSearch">Search</button>
+                        <button id="admin_btnReload">Re-load</button>
+                    </div>
+
                 </div>
                 <div class="listBy">
-                    List by:
+                    <span> List by:</span>
+
 
                     <input type="text" style="display: none;" th:value="${data3}" id="status">
                     <input type="text" style="display: none;" th:value="${data4}" id="lock">
-<!-- 
-                    <input type="text" style="display: none;" th:value="${data3}" id="isStatusPage">
-                    <input type="text" style="display: none;" th:value="${data4}" id="isLockPage">
-                    <input type="text" style="display: none;" th:value="${data5}" id="status">
-                    <input type="text" style="display: none;" th:value="${data6}" id="lock"> -->
+                    <div style="display: inline-block;">
+                        <button id="admin_btnActiveList" th:text="${data3} ? 'Active':'De-Active' "
+                            th:class="${data3} ? 'positive-status' : 'negative-status' "></button>
+                        <button id="admin_btnLockedList" th:text="${data4} ?  'None-lock':'Lock' "
+                            th:class="${data4} ? 'positive-status' : 'negative-status' "></button>
+                    </div>
 
-                    <button id="admin_btnActiveList" th:text="${data3} ? 'Active':'De-Active' "
-                        th:class="${data3} ? 'positive-status' : 'negative-status' "></button>
-                    <button id="admin_btnLockedList" th:text="${data4} ?  'None-lock':'Lock' "
-                        th:class="${data4} ? 'positive-status' : 'negative-status' "></button>
 
                 </div>
             </div>
@@ -57,15 +70,19 @@
         <section th:replace="layout/admin-table :: table-users(${data})">
         </section>
         <div id="pagination">
-            <button id="admin_firstPage"  disabled><i class="fa-solid fa-backward-fast" style="color: whitesmoke; font-size: 12px;"></i></button>
-            <button id="admin_previousPage" disabled><i class="fa-solid fa-caret-left" style="color: whitesmoke; font-size: 16px;"></i></i></button>
+            <button id="admin_firstPage" disabled><i class="fa-solid fa-backward-fast"
+                    style="color: whitesmoke; font-size: 12px;"></i></button>
+            <button id="admin_previousPage" disabled><i class="fa-solid fa-caret-left"
+                    style="color: whitesmoke; font-size: 16px;"></i></i></button>
             <input type="number" id="admin_goToPageInput" min="1" th:max="${data2}" th:value="${data1}">
             <label id="lbPageInput" for="goToPageInput" th:text="'of '+${data2}">
 
             </label>
             <button id="admin_goToPageButton" onclick="goToPage()">Go</button>
-            <button id="admin_nextPage" ><i class="fa-solid fa-caret-right" style="color: whitesmoke; font-size: 16px;"></i></button>
-            <button id="admin_lastPage"><i class="fa-solid fa-forward-fast" style="color: whitesmoke; font-size: 12px;"></i></button>
+            <button id="admin_nextPage"><i class="fa-solid fa-caret-right"
+                    style="color: whitesmoke; font-size: 16px;"></i></button>
+            <button id="admin_lastPage"><i class="fa-solid fa-forward-fast"
+                    style="color: whitesmoke; font-size: 12px;"></i></button>
             <input id="admin_totalPages" style="display: none;" type="text" th:value="${data2}">
         </div>
     </div>

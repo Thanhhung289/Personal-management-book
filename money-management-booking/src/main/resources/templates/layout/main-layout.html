@@ -1,123 +1,201 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:spring="http://www.springframework.org/tags"
-    th:fragment="main-fragment(title,otherStaticResource,javascript,mainContent)">
+    th:fragment="main-fragment(title,otherStaticResource,javascript,pageTitle,mainContent)">
 
-<head th:fragment="header(title)">
+<head>
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/de1d9009fe.js" crossorigin="anonymous"></script>
-    
-    <link rel="stylesheet" th:href="@{/assets/css/dashboard.css}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link th:href='@{/image/362499027_1461158234640138_8913616988795934268_n.png}' rel='shortcut icon' type="image/x-icon">
+
+
+
+
+
+    <link th:href="@{/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/assets/css/layout.css}">
     <link rel="stylesheet" th:href="@{/assets/css/alert-report.css}">
+    <script src="https://kit.fontawesome.com/de1d9009fe.js" crossorigin="anonymous"></script>
+    <script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
     <title th:replace="${title}">Dashboard Sidebar Menu</title>
     <th:block th:replace="${otherStaticResource}">
 
     </th:block>
+
 </head>
 
-<body th:onload="report([[${param.report}]])">
+<body th:onload="report([[${param.report}]]) ">
+  <script>
+    
+  </script>
+    <header id="header" class="header fixed-top d-flex align-items-center">
 
-    <nav class="main-layout_sidebar main-layout_close">
-        <header>
-            <div class="main-layout_image-text">
-                <span class="main-layout_image">
-                    <a th:href="@{/users/overview}"><img id="main-layout_logo-project" src="/image/logo.jpg" alt="logo"></a>
-                </span>
-                <div class="main-layout_text main-layout_logo-text">
-                    <span class="name">PMM</span>
-                    <span class="profession"></span>
-                </div>
-            </div>
-            <!-- <i class='bx bx-chevron-right toggle'></i> -->
-            <i class="fa-solid fa-angle-right toggle" style="font-size: 13px;"></i>
-        </header>
-
-        <div class="main-layout_menu-bar">
-            <div class="main-layout_menu">
-                <ul class="main-layout_menu-links">
-                    <li sec:authorize="hasRole('ROLE_ADMIN')" class="main-layout_nav-link" th:classappend="${#httpServletRequest.requestURI == '/admins/home' ? 'current-nav' : ''}">
-                        <a th:href="@{/admins/home}">
-                            <i class='fa-solid fa-crown icon'></i>
-                            <span class="main-layout_text main-layout_nav-text">Admin</span>
-                        </a>
-                    </li>
-                    <li class="main-layout_nav-link" th:classappend="${#httpServletRequest.requestURI == '/users/overview' ? 'current-nav' : ''}">
-                        <a th:href="@{/users/overview}" >
-                            <!-- <i class='bx bxs-bar-chart-square icon' ></i> -->
-                            <i class="fa-solid fa-wallet icon"></i>
-                            <span class="main-layout_text main-layout_nav-text" >Overview</span>
-                        </a>
-                    </li>
-
-                    <li class="main-layout_nav-link" th:classappend="${#httpServletRequest.requestURI == '/users/list-budget' ? 'current-nav' : ''}">
-                        <a th:href="@{/users/list-budget}">
-                            <i class="fa-solid fa-piggy-bank icon"></i>
-                            <span class="main-layout_text main-layout_nav-text">Budget</span>
-                        </a>
-                    </li>
-
-                    <li class="main-layout_nav-link" th:classappend="${#httpServletRequest.requestURI == '/users/list-income' ? 'current-nav' : ''}">
-                        <a th:href="@{/users/list-income}">
-                            <i class="fa-solid fa-money-bill icon"></i>
-                            <span class="main-layout_text main-layout_nav-text">Income</span>
-                        </a>
-                    </li>
-                    <li class="main-layout_nav-link" th:classappend="${#httpServletRequest.requestURI == '/users/list-expenses' ? 'current-nav' : ''}">
-                        <a th:href="@{/users/list-expenses}">
-                            <i class="fa-solid fa-money-check-dollar icon"></i>
-                            <span class="main-layout_text main-layout_nav-text">Expense</span>
-                        </a>
-                    </li>
+        <div class="d-flex align-items-center justify-content-between">
+            <a class="logo d-flex align-items-center" th:href="@{/users/overview}">
+                <img th:src="@{/assets/img/logo.png}" alt="">
+                <span class="d-none d-lg-block">PMMB</span>
+            </a>
+            <i class="bi bi-list toggle-sidebar-btn"></i>
+        </div>
 
 
-                    <li class="main-layout_nav-link" th:classappend="${#httpServletRequest.requestURI == '/Debtor/ListAll' ? 'current-nav' : ''}">
-
-                        <a th:href="@{/Debtor/ListAll}">
-                            <i class="fa-solid fa-money-bill-transfer icon"></i>
-
-                            <span class="main-layout_text main-layout_nav-text">Debt</span>
-                        </a>
-                    </li>
-
-                    <li class="main-layout_nav-link" th:classappend="${#httpServletRequest.requestURI.contains('/settings') ? 'current-nav' : ''}">
-                        <a th:href="@{/settings/index}">
-                            <i class="fa-solid fa-gear icon"></i>
-                            <span class="main-layout_text main-layout_nav-text">Setting</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="main-layout_bottom-content">
-                <li class="">
-                    <a th:href="@{/logout}">
-                        <i class="fa-solid fa-right-from-bracket icon"></i>
-                        <span class="main-layout_text main-layout_nav-text">Logout</span>
+        <nav class="header-nav ms-auto">
+            <ul class="d-flex align-items-center">
+                <li class="nav-item dropdown pe-3">
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                        <img th:src="${currentUser.avatar  == null ? '/image/avata1.jpg': currentUser.avatar} " width="36" height="36"     alt="Profile" class="rounded-circle">
+                        <span class="d-none d-md-block dropdown-toggle ps-2" th:text="${currentUser.fullName}"></span>
                     </a>
-                </li>
-                </li>
-            </div>
-        </div>
-    </nav>
-    <div class="main-layout_top-header">
-        <h6> Hi there <span th:text="${userFullName}"></span>!
-        </h6>
-        <div class="main-layout_total-money"> 
-            <i class="fa-solid fa-sack-dollar icon" ></i>
-            <p>Total money: </p>
-            <span th:text="' '+${totalMoney}"></span>
-        </div>
-    </div>
-    <section class="main-layout_home" th:insert="${mainContent}">
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                        <li class="dropdown-header">
+                            <h6 th:text="${currentUser.fullName}"></h6>
+                            <span th:text="${totalMoney + currentUser   .currency}"></span>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
 
-    </section>
-    <script th:src="@{/assets/javascript/script.js}"></script>
-    <script th:src="@{/assets/javascript/alert-report.js}"></script>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" th:href="@{/settings/profile}">
+                                <i class="bi bi-person"></i>
+                                <span>My Profile</span>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" th:href="@{/logout}">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Sign Out</span>
+                            </a>
+                        </li>
+
+                    </ul><!-- End Profile Dropdown Items -->
+                </li><!-- End Profile Nav -->
+
+            </ul>
+        </nav><!-- End Icons Navigation -->
+
+    </header><!-- End Header -->
+
+    <!-- ======= Sidebar ======= -->
+    <side id="sidebar" class="sidebar">
+
+        <ul class="sidebar-nav" id="sidebar-nav">
+            <li class="nav-heading">Pages</li>
+
+            <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item"
+                th:classappend="${#httpServletRequest.requestURI == '/admins/home' ? 'current-nav' : ''}">
+                <a class="nav-link collapsed" th:href="@{/admins/home}">
+                    <i class='fa-solid fa-crown icon'></i>
+                    <span>Admin</span>
+                </a>
+            </li><!-- End Profile Page Nav -->
+
+            <li class="nav-item"
+                th:classappend="${#httpServletRequest.requestURI == '/users/overview' ? 'current-nav' : ''}">
+
+                <a class="nav-link collapsed" th:href="@{/users/overview}">
+                    <i class="fa-solid fa-wallet icon"></i>
+                    <span>Overview</span>
+                </a>
+            </li><!-- End F.A.Q Page Nav -->
+
+            <li class="nav-item"
+                th:classappend="${#httpServletRequest.requestURI == '/users/list-budget' ? 'current-nav' : ''}">
+                <a class="nav-link collapsed" th:href="@{/users/list-budget}">
+                    <i class="fa-solid fa-piggy-bank icon"></i>
+                    <span>Budget</span>
+                </a>
+            </li><!-- End Contact Page Nav -->
+
+            <li class="nav-item"
+                th:classappend="${#httpServletRequest.requestURI == '/users/list-income' ? 'current-nav' : ''}">
+                <a class="nav-link collapsed" th:href="@{/users/list-income}">
+                    <i class="fa-solid fa-money-bill icon"></i>
+                    <span>Income</span>
+                </a>
+            </li><!-- End Register Page Nav -->
+
+
+            <li class="nav-item"
+                th:classappend="${#httpServletRequest.requestURI == '/users/list-expenses' ? 'current-nav' : ''}">
+                <a class="nav-link collapsed" th:href="@{/users/list-expenses}">
+                    <i class="fa-solid fa-money-check-dollar icon"></i>
+                    <span>Expense</span>
+                </a>
+            </li><!-- End Error 404 Page Nav -->
+
+            <li class="nav-item"
+                th:classappend="${#httpServletRequest.requestURI == '/Debtor/ListAll' ? 'current-nav' : ''}">
+                <a class="nav-link collapsed" th:href="@{/Debtor/ListAll}">
+                    <i class="fa-solid fa-money-bill-transfer icon"></i>
+                    <span>Debt</span>
+                </a>
+            </li><!-- End Blank Page Nav -->
+            <li class="nav-item"
+                th:classappend="${#httpServletRequest.requestURI == '/Debtor/ListAll' ? 'current-nav' : ''}">
+
+                <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+                    <i class="fa-solid fa-gear icon"></i>
+                    <span>Settings</span>
+                    <i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a th:href="@{/settings/category}">
+                            <i class="bi bi-circle"></i><span>Category</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/settings/profile}">
+                            <i class="bi bi-circle"></i><span>Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/settings/change-password}">
+                            <i class="bi bi-circle"></i><span>Serucity</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </li><!-- End Forms Nav -->
+        </ul>
+
+    </side><!-- End Sidebar-->
+
+    <main id="main" class="main" style="padding-bottom: 80px;" > 
+
+        <div class="pagetitle" th:insert="${pageTitle}">
+      
+          </div>
+
+
+        <section class="section dashboard" th:insert="${mainContent}">
+
+        </section>
+
+    </main><!-- End #main -->
+
     <th:block th:replace="${javascript}">
 
     </th:block>
-   
+
+    <!-- Vendor JS Files -->
+
+    <!-- Template Main JS File -->
+    <script th:src="@{/assets/javascript/layout.js}"></script>
+    <script th:src="@{/assets/javascript/alert-report.js}"></script>
+
 </body>
 
 </html>

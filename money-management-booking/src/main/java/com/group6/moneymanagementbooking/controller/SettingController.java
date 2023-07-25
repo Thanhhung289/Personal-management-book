@@ -67,7 +67,7 @@ public class SettingController {
     @PostMapping("/detail-category")
     public String detail(@ModelAttribute Category category) {
         return Optional.ofNullable(categoryService.updateCategory(category))
-                .map(t -> "redirect:/settings/list-category")
+                .map(t -> "redirect:/settings/category")
                 .orElse("failed");
     }
 

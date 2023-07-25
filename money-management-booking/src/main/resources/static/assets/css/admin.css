@@ -23,9 +23,6 @@ tr th {
     text-align: center;
 }
 
-.red-row {
-    color: #267e18;
-}
 
 .positive-status,
 .negative-status,
@@ -41,6 +38,13 @@ tr th {
     border-radius: 12px;
     padding: 8px;
     border: 0px;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin_user-details {
+    align-items: center;
+    text-align: center;
 }
 
 #admin_btnReload {
@@ -49,35 +53,13 @@ tr th {
 }
 
 .positive-status {
-    background-color: seagreen;
+    background-color: #DC3545;
 }
 
 .negative-status {
-    background-color: slategrey;
+    background-color: #007BFF;
 }
 
-.disabled-status {
-    padding: 8px 20px;
-    width: auto;
-    color: tomato;
-}
-
-.disabled-status:hover {
-    background-color: blueviolet;
-    color: #fff;
-}
-
-.enabled-status:hover {
-    background-color: blueviolet;
-    color: #fff;
-}
-
-.enabled-status {
-    padding: 8px 20px;
-    width: auto;
-    border: 1px solid #fff;
-    color: green;
-}
 
 
 #pagination {
@@ -186,7 +168,6 @@ tr th {
 
 .admin_table-content {
     width: 100%;
-    backdrop-filter: blur(7px);
 }
 
 .admin_table {
@@ -202,19 +183,17 @@ tr th {
 
 .admin_table td,
 .admin_table th {
-    height: 44px;
     margin-right: .5rem;
-    padding: 12px 16px;
+    padding: 0 12px;
     border: 1px solid #ddd;
-    height: 68px;
-    min-height: 68px;
+    height: 56px;
 
 }
 
 
 .admin_table th {
-    background-color: black;
-    color: #fff;
+    background-color: #f2f2f2;
+    color: black;
 }
 
 .admin_table tbody tr:nth-child(even) {
@@ -222,7 +201,7 @@ tr th {
 }
 
 .admin_table tbody tr:nth-child(odd) {
-    background-color: #f2f2f2;
+    background-color: white;
 }
 
 .status {
@@ -268,7 +247,7 @@ tr th {
 }
 
 input:checked+.admin_slider {
-    background-color: seagreen;
+    background-color: #28A745;
 }
 
 input:focus+.admin_slider {
@@ -298,23 +277,27 @@ h1 {
     font-weight: bold !important;
     padding: 8px 0;
     width: 100%;
-    
+
 }
+
 @media (min-width: 75.0625em) {
 
-
     td {
-        width: 50px;
-        max-width: 200px;
-        min-width: 50px;
+        max-width: 160px;
+        min-width: 52px;
     }
+    .admin_username {
+        min-width: 120px;
+    }
+
     #table-header {
         font-size: 30px;
-        
+
     }
-    .box-admin{
+
+    .box-admin {
         border: 1px solid rgba(115, 110, 110, 0.508);
-        border-radius:  40px;
+        border-radius: 40px;
         width: 92%;
         display: flex;
         align-items: center;
@@ -323,13 +306,15 @@ h1 {
         box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
     }
-    .admin_table-body{
+
+    .admin_table-body {
         width: 96%;
     }
-    .admin_table-header{
+
+    .admin_table-header {
         width: 100%;
         padding: 20px 2%;
-        background-color: silver;
+        background-color: rgba(210, 210, 210, 0.567);
         border-top-left-radius: 40px;
         border-top-right-radius: 40px;
         margin-bottom: 12px;
@@ -348,6 +333,7 @@ h1 {
         justify-content: center;
         flex-wrap: wrap;
     }
+
     #table-header {
         font-size: 20px !important;
     }
@@ -393,6 +379,8 @@ h1 {
         text-align: left;
     }
 
+
+
     .admin_data-contact {
         display: flex;
         flex-wrap: wrap;
@@ -419,10 +407,11 @@ h1 {
     #lbSearch {
         display: none;
     }
-    .admin_table-body{
+
+    .admin_table-body {
         width: 100%;
     }
- 
+
 }
 
 #mainContent {
