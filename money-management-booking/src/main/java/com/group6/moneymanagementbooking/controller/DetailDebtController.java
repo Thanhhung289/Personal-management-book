@@ -90,16 +90,18 @@ public class DetailDebtController {
 
         Accounts acc = accountsService.findById(detail_edbt.getAccounts().getId());
         if (!acc.isActive()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Your account is inactive!");
+
             RedirectView redirectView = new RedirectView();
             redirectView.setUrl("/Debtor/Detail/view-detail/" + detail_edbt.getDeptorId());
+            redirectAttributes.addAttribute("report", "Warning: Your account is inactive!");
             return redirectView;
         }
         if ((detail_edbt.isClassify() && (detail_edbt.getMoney_debt() > acc.getBalance()))) {
             // RedirectAttributes redirectAttributes ;
-            redirectAttributes.addFlashAttribute("errorMessage", "The amount you entered exceeds the account balance!");
+
             RedirectView redirectView = new RedirectView();
             redirectView.setUrl("/Debtor/Detail/view-detail/" + detail_edbt.getDeptorId());
+            redirectAttributes.addAttribute("report", "Warning: The amount you entered exceeds the account balance!");
             return redirectView;
         }
 
