@@ -70,19 +70,6 @@ public class DetailDebtController {
                 itemsPage, currentRequestMapping, "", "", "");
     }
 
-    // @GetMapping("/Add/{id}")
-    // public String registerGet(Model model, @PathVariable("id") int id,
-    // @ModelAttribute("errorMessage") String errorMessage) {
-    // Debt_detail debt_detail = new Debt_detail();
-    // debt_detail.setDeptorId(id);
-    // model.addAttribute("errorMessage", errorMessage);
-    // model.addAttribute("listAccount",
-    // accountsService.findAllByUserId(getIdUser()));
-    // model.addAttribute("debt_detail", debt_detail);
-    // model.addAttribute("title", "Add New");
-    // return "add-detail-debt";
-    // }
-
     @PostMapping("/Add")
     public RedirectView addDetailDebt(Model model, @ModelAttribute("debt_detail") Debt_detail detail_edbt,
             HttpServletRequest request, RedirectAttributes redirectAttributes)
