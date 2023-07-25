@@ -14,7 +14,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.group6.moneymanagementbooking.exception.CustomAuthenticationFailureHandler;
-import com.group6.moneymanagementbooking.repository.UsersRepository;
 import com.group6.moneymanagementbooking.service.AccountsService;
 import com.group6.moneymanagementbooking.service.UsersService;
 import com.group6.moneymanagementbooking.service.impl.UsersServiceImpl;
@@ -27,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 
 public class SpringSecurity {
         private final CustomUserDetailsService userDetailsService;
-        private final UsersRepository usersRepository;
         private final UsersServiceImpl usersServiceImpl;
         private final UsersService usersService;
         private final AccountsService accountsService;
@@ -37,7 +35,7 @@ public class SpringSecurity {
         }
         @Bean
         public CustomAuthenticationFailureHandler authenticationFailureHandler() {
-                return new CustomAuthenticationFailureHandler(userDetailsService, passwordEncoder(), usersServiceImpl,usersRepository);
+                return new CustomAuthenticationFailureHandler(userDetailsService, passwordEncoder(), usersServiceImpl);
         }
         @Bean
         public BeforeAuthenticationFilter beforeAuthenticationFilter(AccountsService accountsService,                                                                     UsersService usersService) {
@@ -45,7 +43,7 @@ public class SpringSecurity {
         }
         @Bean 
         CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler(){
-                return new CustomAuthenticationSuccessHandler(usersRepository);
+                return new CustomAuthenticationSuccessHandler();
         }
         @Bean
         public CaptchaAuthenticationFilter captchaValidationFilter() {

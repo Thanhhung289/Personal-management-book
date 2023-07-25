@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,28 +39,28 @@ public class UsersServiceImpl implements UsersService {
         String pass = userDTORegister.getPassword();
         if (userDTORegister.getEmail() == null || userDTORegister.getPassword() == null
                 || userDTORegister.getRepeatPassword() == null) {
-            report.add("Data cannot be null!!");
+            report.add("Warning: Data cannot be null!!");
             return;
         }
         if(userDTORegister.getEmail().isEmpty() || userDTORegister.getPassword().isEmpty() || userDTORegister.getRepeatPassword().isEmpty()){
-            report.add("Data cannot be empty");
+            report.add("Warning: Data cannot be empty");
             return;
         }
         if (checkEmailDuplicate(userDTORegister.getEmail())) {
-            report.add("This email already exits!!");
+            report.add("Warning: This email already exits!!");
         }
         if (!StringUtils.isValidEmail(userDTORegister.getEmail())) {
-            report.add("This email is not valid!!");
+            report.add("Warning: This email is not valid!!");
         }
         if (!StringUtils.checkPasswordValidate(pass)) {
-            report.add("Password must conform to regex!!");
+            report.add("Warning: Password must conform to regex!!");
         }
         if (!userDTORegister.getPhone().isEmpty() &&
                 !StringUtils.checkPhone(userDTORegister.getPhone())) {
-            report.add("Phone number must conform to regex!!");
+            report.add("Warning: Phone number must conform to regex!!");
         }
         if (!pass.equals(userDTORegister.getRepeatPassword())) {
-            report.add("Password and re-password are not the same!!");
+            report.add("Warning: Password and re-password are not the same!!");
         }
     }
 
@@ -84,9 +83,8 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void updateInfo(UserDTOEditProfileRequest userDTOEditProfile, HttpServletRequest request) throws Exception {
         Optional<Users> usersOptional = usersRepository.findByEmail(userDTOEditProfile.getEmail());
-        if (userDTOEditProfile.getFirstName().isEmpty() || userDTOEditProfile.getLastName().isEmpty()
-                || userDTOEditProfile.getPhone().isEmpty() || userDTOEditProfile.getAddress().isEmpty()) {
-            throw new Exception("Data cannot be empty!!");
+        if (userDTOEditProfile.getFirstName().isEmpty() || userDTOEditProfile.getLastName().isEmpty() || userDTOEditProfile.getPhone().isEmpty()) {
+            throw new Exception("Warning: Data cannot be empty!!");
         }
         if (usersOptional.isPresent()) {
             Users users = usersOptional.get();
@@ -94,19 +92,14 @@ public class UsersServiceImpl implements UsersService {
             users.setFirstName(userDTOEditProfile.getFirstName());
             users.setLastName(userDTOEditProfile.getLastName());
             users.setPhone(userDTOEditProfile.getPhone());
-            if (!request.getSession().getAttribute("userFullName")
-                    .equals(users.getFirstName() + " " + users.getLastName())) {
-                HttpSession session = request.getSession();
-                session.setAttribute("userFullName", users.getFirstName() + " " + users.getLastName());
-            }
             try {
                 usersRepository.save(users);
             } catch (Exception e) {
-                throw new Exception("Update Infor: " + e.getMessage());
+                throw new Exception("Warning: Update Infor: " + e.getMessage());
             }
 
         } else {
-            throw new Exception("Data cannot be null");
+            throw new Exception("Warning: Data cannot be null");
         }
     }
 
@@ -114,19 +107,19 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void checkChangePassword(String[] listPass) throws Exception {
         if (listPass[0].isEmpty() || listPass[1].isEmpty() || listPass[2].isEmpty()) {
-            throw new Exception("All of input cannot be empty");
+            throw new Exception("Warning: Input cannot be empty");
         }
         if (listPass[0].equals(listPass[1])) {
-            throw new Exception("This new password is the same with your old password");
+            throw new Exception("Warning: This new password is the same with your old password");
         }
         if (!passwordEncoder.matches(listPass[0], getUsers().getPassword())) {
-            throw new Exception("Old password is incorrect");
+            throw new Exception("Warning: Old password is incorrect");
         }
         if (!listPass[1].equals(listPass[2])) {
-            throw new Exception("Password and re-password are not the same");
+            throw new Exception("Warning: Password and re-password are not the same");
         }
         if (!StringUtils.checkPasswordValidate(listPass[1])) {
-            throw new Exception("Password must conform to regex");
+            throw new Exception("Warning: Password must conform to regex");
         }
     }
 

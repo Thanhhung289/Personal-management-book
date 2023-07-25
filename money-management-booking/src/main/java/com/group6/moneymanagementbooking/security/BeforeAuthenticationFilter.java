@@ -4,6 +4,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.group6.moneymanagementbooking.dto.mapper.UsersMapper;
 import com.group6.moneymanagementbooking.enity.Users;
 import com.group6.moneymanagementbooking.service.AccountsService;
 import com.group6.moneymanagementbooking.service.UsersService;
@@ -35,7 +36,7 @@ public class BeforeAuthenticationFilter extends OncePerRequestFilter {
             double totalMoney = accountsService.getTotalBalance();
             request.setAttribute("totalMoney", totalMoney);
             Users u = usersService.getUserByEmail(email);
-            request.setAttribute("userFullName", u.getFirstName() + " " + u.getLastName());
+            request.setAttribute("currentUser",UsersMapper.toUserDTOResponse(u));
         }
         filterChain.doFilter(request, response);
     }

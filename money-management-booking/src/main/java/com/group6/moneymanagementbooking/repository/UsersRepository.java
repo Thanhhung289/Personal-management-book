@@ -28,13 +28,11 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
 
         public List<Users> findByFirstNameContainingOrLastNameContaining(String firstName, String lastName);
 
-        public Page<Users> findByNonLocked(boolean nonLocked, Pageable pageable);
+        public Page<Users> findByNonLockedAndRole(boolean nonLocked,String role ,Pageable pageable);
 
-        public List<Users> findByNonLocked(boolean nonLocked);
 
-        public Page<Users> findByActive(boolean active, Pageable pageable);
+        public Page<Users> findByActiveAndRole(boolean active, String role ,Pageable pageable);
 
-        public List<Users> findByActive(boolean active);
 
         public List<Users> findByPhoneContaining(String phone);
 

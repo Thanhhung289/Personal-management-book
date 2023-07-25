@@ -33,9 +33,9 @@ public class CategoryServiceImpl implements CategoryService {
             boolean category1 = categoryRepository.findByNameAndUser_id(category.getName(), category.getUser_id())
                     .isPresent();
             if (category1)
-                throw new Exception("Category name already exists");
+                throw new Exception("Warning: Category name already exists");
             if (category.getName().isEmpty())
-                throw new Exception("Name cannot be null");
+                throw new Exception("Warning: Name cannot be null");
             return categoryRepository.save(category);
         } catch (Exception e) {
             model.addAttribute("report", e.getMessage());

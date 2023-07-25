@@ -13,9 +13,10 @@ import lombok.Setter;
 public class UsersForAdminDTOResponse {
     private int id;
 
-    private String name;
-
+    private String firstName;
+    private String lastName;
     private String email;
+    private String avatar;
 
     private String phone;
 
@@ -24,11 +25,13 @@ public class UsersForAdminDTOResponse {
     private String role;
 
     private boolean active;
-    
+
     private int failedAttempt;
 
     private boolean accountNonLocked;
 
     private Date lockTime;
+
+   
 
 }

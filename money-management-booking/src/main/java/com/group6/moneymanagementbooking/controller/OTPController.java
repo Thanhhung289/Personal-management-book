@@ -41,7 +41,7 @@ public class OTPController {
         HttpSession session = request.getSession();
         if (session.getAttribute("emailOTP") != null) {
             String email = (String) session.getAttribute("emailOTP");
-            int otpCode = NumberUtils.getRandomInt(1000000, 999999);
+            int otpCode = NumberUtils.getRandomInt(100000, 999999);
             String htmlContent = otpService.OTPEmailTemplate(String.valueOf(otpCode));
             try {
                 emailService.sendVerifyEmail(email, "Dear MyFriend, ", htmlContent);

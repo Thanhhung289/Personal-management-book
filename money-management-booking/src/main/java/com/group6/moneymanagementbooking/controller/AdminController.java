@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.group6.moneymanagementbooking.dto.mapper.UsersMapper;
 import com.group6.moneymanagementbooking.dto.request.UsersDTORegisterRequest;
+import com.group6.moneymanagementbooking.dto.response.UsersDTOResponse;
 import com.group6.moneymanagementbooking.dto.response.UsersForAdminDTOResponse;
 import com.group6.moneymanagementbooking.enity.Users;
+import com.group6.moneymanagementbooking.exception.SystemBadRequestException;
 import com.group6.moneymanagementbooking.repository.UsersRepository;
 import com.group6.moneymanagementbooking.service.AdminService;
 import com.group6.moneymanagementbooking.util.WebUtils;
@@ -127,9 +129,31 @@ public class AdminController {
         return WebUtils.adminDispartcher(HOME, model, groupOfUsers, page, !isActive, null);
     }
 
+    @GetMapping("/user-details/{id}")
+    public String userDetails(Model model, @PathVariable("id") int id) {
+        UsersForAdminDTOResponse userDetails = adminService.getUserDetailsById(id);
+        if (userDetails == null) {
+            throw new SystemBadRequestException("User id not valid!!");
+        }
+        model.addAttribute("userDetail", userDetails);
+        return "user-details";
+    }
+
+    @GetMapping("/unlock-user/{id}")
+    public String userUnlock(Model model, @PathVariable("id") int id) {
+        try {
+            adminService.unlockUser(id);
+        } catch (Exception e) {
+            throw new SystemBadRequestException("User id not valid!!");
+        }
+        return "redirect:/admins/user-details/"+id;
+    }
+
     @GetMapping("/addfast")
     public String addFast() {
-        for (int i = 1; i <= 100; i++) {
+        for (int i = 201; i <= 240; i++) {
+            String firstName = "trong" + i;
+            String lastName = "nguyen" + i;
             String email = "trongnguyen" + i + "@gmail.com";
             String password = "$2a$10$tCfT.g3xn99ISNlniDJy/ehNibU5vCqKS.5nDWtmpfozWHpOHo/fu";
             String address = "Ninh Binh";
@@ -137,6 +161,8 @@ public class AdminController {
             UsersDTORegisterRequest usersDTORegisterRequest = new UsersDTORegisterRequest(email,
                     password, password, phone, address);
             Users users = UsersMapper.toUsers(usersDTORegisterRequest);
+            users.setFirstName(firstName);
+            users.setLastName(lastName);
             usersRepository.save(users);
         }
         String statusId = "#status" + 100;

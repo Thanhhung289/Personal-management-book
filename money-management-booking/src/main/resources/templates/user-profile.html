@@ -3,6 +3,7 @@
     ~{::title}, 
     ~{::#profile-static-resource},
     ~{::#profile_javascript},
+    ~{::#pageTitle},
     ~{::#mainContent})">
 
 
@@ -22,16 +23,23 @@
 </head>
 
 <body>
+    <div id="pageTitle">
+        <h1>Edit Profile</h1>
+        <nav>
+            <ol class="breadcrumb" style="cursor: pointer;">
+                <li class="breadcrumb-item">Settings</li>
+                <li class="breadcrumb-item active"><a th:href="@{/Debtor/ListAll}">Profile</a></li>
+            </ol>
+        </nav>
+    </div>
+
     <section id="mainContent">
         <div class="container bootstrap snippets bootdey" style="margin-top: 10px;" >
-            <h1 class="text-primary">Edit Profile</h1>
-        
-            <hr>
             <p style="color: red;" th:text="${param.mess}"></p>
             <div class="row">
                 <div class="col-md-3">
                     <div class="card-body" style="display: flex; flex-wrap: wrap; justify-content: center;" >
-                        <img th:src="${userDTOEditProfile.avatar}" alt="Avatar" class=" rounded-circle "
+                        <img th:src="${userDTOEditProfile.avatar == null ? '/image/avata1.jpg': userDTOEditProfile.avatar}" alt="Avatar" class=" rounded-circle "
                             id="img-avatar" style="margin-bottom: 12px; " width="200" height="200">
 
                         <form  th:action="@{/settings/upload-avatar}" method="POST" enctype="multipart/form-data" style="width: 100%; display: flex; justify-content: center; flex-wrap: wrap;">

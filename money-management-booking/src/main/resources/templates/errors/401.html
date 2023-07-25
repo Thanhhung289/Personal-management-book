@@ -66,7 +66,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <li>Check that you are using the correct username and password.</li>
             <li>Contact the website administrator for more information.</li>
         </ul>
-        <a sec:authorize="hasRole('ROLE_USER')"th:href="@{/users/dashboard}">Go to homepage</a>
+        <a sec:authorize="hasRole('ROLE_USER')"th:href="@{/users/overview}">Go to homepage</a>
         <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admins/home}"> Go to homepage</a>  
     </div>
 </body>

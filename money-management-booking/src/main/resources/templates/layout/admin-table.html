@@ -2,34 +2,25 @@
     <table class="admin_table table-hover" id="admin_usersTable">
         <thead>
             <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Failed attempt</th>
-                <th scope="col">Lock</th>
-                <th scope="col">Lock time</th>
-                <th scope="col">Status</th>
-                <th scope="col">Change Status</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Lock</th>
+                <th>Status</th>
+                <th>Details</th>
+
             </tr>
         </thead>
         <tbody>
             <tr th:each="user : ${data}" th:id="'user' + ${user.id}">
-                <th:block th:if="${user.name != null}">
-                    <td data-label="ID" th:text="${user.id}"></td>
-                    <td data-label="Name" th:text="${user.name}"></td>
+                    <td class='text-center' data-label="ID" th:text="${user.id}"></td>
+                    <td class="admin_username" data-label="Name" th:text="${user.firstName + ' ' + user.lastName}"></td>
                     <td data-label="Email" th:text="${user.email}"></td>
                     <td data-label="Phone" class="admin-center-text" th:text="${user.phone}"></td>
-                    <td data-label="Failed attempt" class="admin-center-text" th:text="${user.failedAttempt}">
-                    </td>
                     <td data-label="Lock" th:switch="${user.accountNonLocked}" class="status">
                         <button th:case="true" class="positive-status">Non-lock</button>
                         <button th:case="false" class="negative-status">Lock</button>
-                    </td>
-                    <td data-label="Lock time" th:text="${user.lockTime}"></td>
-                    <td data-label="Status" th:switch="${user.active}" class="status">
-                        <button th:case="true" class="positive-status">Active</button>
-                        <button th:case="false" class="negative-status">De-active</button>
                     </td>
                     <td data-label="Change Status" class="status"
                         th:onclick="changeStatus([[${user.id}]], [[${user.active}]])">
@@ -38,13 +29,13 @@
                             <span class="admin_slider admin_round"></span>
                         </label>
                     </td>
-                </th:block>
+                    <td data-label = 'Details' class="admin_user-details"> 
+                        <a th:href="@{'/admins/user-details/'+${user.id}}" class="btn btn-warning"><i class="fas fa-info-circle"></i>Details</a>
+                    </td>
             </tr>
 
             <th:block th:if="${data.size() < 8}">
                 <tr th:each="i : ${#numbers.sequence(1, 8 - data.size())}">
-                    <td></td>
-                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>

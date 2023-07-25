@@ -26,7 +26,7 @@ body {
 .card-header {
     border-top-right-radius: 25px !important;
     border-top-left-radius: 25px !important;
-    background-color: rgba(210, 210, 210, 0.567)
+    background-color: rgba(210, 210, 210, 0.567);
 }
 
 .modal-lg {
