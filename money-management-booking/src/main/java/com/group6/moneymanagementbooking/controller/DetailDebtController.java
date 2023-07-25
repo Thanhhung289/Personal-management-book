@@ -54,32 +54,21 @@ public class DetailDebtController {
 
         Debt_detail debt_detail = new Debt_detail();
         debt_detail.setDeptorId(id);
-        model.addAttribute("errorMessage", errorMessage);
-        model.addAttribute("listAccount", accountsService.findAllByUserId(getIdUser()));
-        model.addAttribute("debt_detail", debt_detail);
+        // model.addAttribute("errorMessage", errorMessage);
+        // model.addAttribute("listAccount",
+        // accountsService.findAllByUserId(getIdUser()));
+        // model.addAttribute("debt_detail", debt_detail);
 
-        model.addAttribute("listAcc", accountsService.findAllByUserId(getIdUser()).size());
-        model.addAttribute("debtor", debtorService.getDebtorById(id));
-        model.addAttribute("page", itemsPage);
-        model.addAttribute("link", currentRequestMapping);
-        return "view-debt";
-        // return dispathcher(model, debt_detail,
-        // accountsService.findAllByUserId(getIdUser()).size(), errorMessage,
-        // itemsPage, currentRequestMapping, "", "", "");
+        // model.addAttribute("listAcc",
+        // accountsService.findAllByUserId(getIdUser()).size());
+        // model.addAttribute("debtor", debtorService.getDebtorById(id));
+        // model.addAttribute("page", itemsPage);
+        // model.addAttribute("link", currentRequestMapping);
+        // return "view-debt";
+        return dispathcher(model, debt_detail,
+                errorMessage,
+                itemsPage, currentRequestMapping, "", "", "");
     }
-
-    // @GetMapping("/Add/{id}")
-    // public String registerGet(Model model, @PathVariable("id") int id,
-    // @ModelAttribute("errorMessage") String errorMessage) {
-    // Debt_detail debt_detail = new Debt_detail();
-    // debt_detail.setDeptorId(id);
-    // model.addAttribute("errorMessage", errorMessage);
-    // model.addAttribute("listAccount",
-    // accountsService.findAllByUserId(getIdUser()));
-    // model.addAttribute("debt_detail", debt_detail);
-    // model.addAttribute("title", "Add New");
-    // return "add-detail-debt";
-    // }
 
     @PostMapping("/Add")
     public RedirectView addDetailDebt(Model model, @ModelAttribute("debt_detail") Debt_detail detail_edbt,
@@ -88,16 +77,18 @@ public class DetailDebtController {
 
         Accounts acc = accountsService.findById(detail_edbt.getAccounts().getId());
         if (!acc.isActive()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Your account is inactive!");
+
             RedirectView redirectView = new RedirectView();
             redirectView.setUrl("/Debtor/Detail/view-detail/" + detail_edbt.getDeptorId());
+            redirectAttributes.addAttribute("report", "Warning: Your account is inactive!");
             return redirectView;
         }
         if ((detail_edbt.isClassify() && (detail_edbt.getMoney_debt() > acc.getBalance()))) {
             // RedirectAttributes redirectAttributes ;
-            redirectAttributes.addFlashAttribute("errorMessage", "The amount you entered exceeds the account balance!");
+
             RedirectView redirectView = new RedirectView();
             redirectView.setUrl("/Debtor/Detail/view-detail/" + detail_edbt.getDeptorId());
+            redirectAttributes.addAttribute("report", "Warning: The amount you entered exceeds the account balance!");
             return redirectView;
         }
 
@@ -153,21 +144,22 @@ public class DetailDebtController {
 
         Debt_detail debt_detail = new Debt_detail();
         debt_detail.setDeptorId(idDebtor);
-        model.addAttribute("errorMessage", "");
-        model.addAttribute("listAccount",
-                accountsService.findAllByUserId(getIdUser()));
-        model.addAttribute("debt_detail", debt_detail);
-        model.addAttribute("listAcc", accountsService.findAllByUserId(getIdUser()).size());
-        model.addAttribute("debtor", debtorService.getDebtorById(idDebtor));
-        model.addAttribute("filterType", filterType);
-        model.addAttribute("filterValueStart", filterValueStart);
-        model.addAttribute("filterValueEnd", filterValueEnd);
-        model.addAttribute("page", itemsPage);
-        model.addAttribute("link", currentRequestMapping);
-        // return dispathcher(model, debt_detail, 0, "", itemsPage,
-        // currentRequestMapping, filterType, filterValueStart,
-        // filterValueEnd);
-        return "view-debt";
+        // model.addAttribute("errorMessage", "");
+        // model.addAttribute("listAccount",
+        // accountsService.findAllByUserId(getIdUser()));
+        // model.addAttribute("debt_detail", debt_detail);
+        // model.addAttribute("listAcc",
+        // accountsService.findAllByUserId(getIdUser()).size());
+        // model.addAttribute("debtor", debtorService.getDebtorById(idDebtor));
+        // model.addAttribute("filterType", filterType);
+        // model.addAttribute("filterValueStart", filterValueStart);
+        // model.addAttribute("filterValueEnd", filterValueEnd);
+        // model.addAttribute("page", itemsPage);
+        // model.addAttribute("link", currentRequestMapping);
+        return dispathcher(model, debt_detail, "", itemsPage,
+                currentRequestMapping, filterType, filterValueStart,
+                filterValueEnd);
+        // return "view-debt";
 
     }
 
@@ -176,23 +168,24 @@ public class DetailDebtController {
         return users.getId();
     }
 
-    // private String dispathcher(Model model, Debt_detail debt_detail, int listAcc,
-    // String errorMessage, Page<Debt_detail> itemsPage,
-    // String currentRequestMapping, String filterType, String filterValueStart,
-    // String filterValueEnd) {
+    private String dispathcher(Model model, Debt_detail debt_detail,
+            String errorMessage, Page<Debt_detail> itemsPage,
+            String currentRequestMapping, String filterType, String filterValueStart,
+            String filterValueEnd) {
 
-    // model.addAttribute("errorMessage", "");
-    // model.addAttribute("listAccount",
-    // accountsService.findAllByUserId(getIdUser()));
-    // model.addAttribute("debt_detail", debt_detail);
+        model.addAttribute("errorMessage", "");
+        model.addAttribute("listAccount",
+                accountsService.findAllByUserId(getIdUser()));
+        model.addAttribute("debt_detail", debt_detail);
+        model.addAttribute("listAcc",
+                accountsService.findAllByUserId(getIdUser()).size());
+        model.addAttribute("debtor", debtorService.getDebtorById(idDebtor));
+        model.addAttribute("filterType", filterType);
+        model.addAttribute("filterValueStart", filterValueStart);
+        model.addAttribute("filterValueEnd", filterValueEnd);
+        model.addAttribute("page", itemsPage);
+        model.addAttribute("link", currentRequestMapping);
+        return "view-debt";
 
-    // model.addAttribute("debtor", debtorService.getDebtorById(idDebtor));
-    // model.addAttribute("filterType", filterType);
-    // model.addAttribute("filterValueStart", filterValueStart);
-    // model.addAttribute("filterValueEnd", filterValueEnd);
-    // model.addAttribute("page", itemsPage);
-    // model.addAttribute("link", currentRequestMapping);
-    // return "view-debt";
-
-    // }
+    }
 }

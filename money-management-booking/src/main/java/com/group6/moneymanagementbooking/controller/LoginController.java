@@ -35,7 +35,7 @@ public class LoginController {
         if (!SecurityUtils.getCurrentUsername().equals("anonymousUser")) {
             return "redirect:/users/overview";
         }
-                model.addAttribute("site_key", CaptchaServiceUtils.SITE_KEY);
+        model.addAttribute("site_key", CaptchaServiceUtils.SITE_KEY);
         model.addAttribute("usersDTOLoginRequest", accountDTOLoginRequest);
         model.addAttribute("report", "");
         return "login";
