@@ -2,6 +2,7 @@ package com.group6.moneymanagementbooking.service.impl;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +43,8 @@ public class UsersServiceImpl implements UsersService {
             report.add("Warning: Data cannot be null!!");
             return;
         }
-        if(userDTORegister.getEmail().isEmpty() || userDTORegister.getPassword().isEmpty() || userDTORegister.getRepeatPassword().isEmpty()){
+        if (userDTORegister.getEmail().isEmpty() || userDTORegister.getPassword().isEmpty()
+                || userDTORegister.getRepeatPassword().isEmpty()) {
             report.add("Warning: Data cannot be empty");
             return;
         }
@@ -83,8 +85,16 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void updateInfo(UserDTOEditProfileRequest userDTOEditProfile, HttpServletRequest request) throws Exception {
         Optional<Users> usersOptional = usersRepository.findByEmail(userDTOEditProfile.getEmail());
-        if (userDTOEditProfile.getFirstName().isEmpty() || userDTOEditProfile.getLastName().isEmpty() || userDTOEditProfile.getPhone().isEmpty()) {
-            throw new Exception("Warning: Data cannot be empty!!");
+
+        if (userDTOEditProfile.getFirstName() == null || userDTOEditProfile.getLastName() == null
+                || userDTOEditProfile.getPhone() == null || userDTOEditProfile.getAddress() == null) {
+            throw new Exception("Warning: Data cannot be null!!");
+        }
+        if (userDTOEditProfile.getPhone().isEmpty() || userDTOEditProfile.getFirstName().isEmpty() || userDTOEditProfile.getLastName().isEmpty()) {
+            throw new Exception("Warning: Data cannot be emtpy!!");
+        }
+        if (!StringUtils.checkPhone(userDTOEditProfile.getPhone())) {
+            throw new Exception("Warning: Phone must conform with regex");
         }
         if (usersOptional.isPresent()) {
             Users users = usersOptional.get();
@@ -133,11 +143,14 @@ public class UsersServiceImpl implements UsersService {
     // forgot_password
     @Override
     public void checkForgotPassword(List<String> report, UsersDTOForgotPasswordRequest usersDTOForgotPasswordRequest) {
-        if(usersDTOForgotPasswordRequest.getPassword() == null || usersDTOForgotPasswordRequest.getRepeatPassword() == null || usersDTOForgotPasswordRequest.getEmail() == null){
+        if (usersDTOForgotPasswordRequest.getPassword() == null
+                || usersDTOForgotPasswordRequest.getRepeatPassword() == null
+                || usersDTOForgotPasswordRequest.getEmail() == null) {
             report.add("Warning: Data cannot be null");
             return;
         }
-             if(usersDTOForgotPasswordRequest.getPassword().isEmpty()|| usersDTOForgotPasswordRequest.getRepeatPassword().isEmpty() ){
+        if (usersDTOForgotPasswordRequest.getPassword().isEmpty()
+                || usersDTOForgotPasswordRequest.getRepeatPassword().isEmpty()) {
             report.add("Warning: Data cannot be empty");
             return;
         }
@@ -245,6 +258,7 @@ public class UsersServiceImpl implements UsersService {
     public Users getUsers() {
         return usersRepository.findByEmail(SecurityUtils.getCurrentUsername()).get();
     }
+
 
     @Override
     public void addAdjustForUser(Users users, Model model) {

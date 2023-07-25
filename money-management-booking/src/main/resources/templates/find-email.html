@@ -5,12 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forgot Password</title>
+    <link rel="stylesheet" th:href="@{/assets/fonts/linearicons/style.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js" th:inline="javascript"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/de1d9009fe.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/assets/css/alert-report.css}">
     <script src="https://www.google.com/recaptcha/enterprise.js?render=site_key"></script>
     <link rel="stylesheet" th:href="@{/assets/css/otp.css}">
 
-<body>
-    <div class="container">
+    <body th:onload="report([[${param.error}]])">
+        <div class="container">
         <div class="row">
             <div class="col-md-5 offset-md-4 form">
 
@@ -44,6 +49,7 @@
             </div>
         </div>
     </div>
+    <script th:src="@{/assets/javascript/alert-report.js}"></script>
 
 </body>
 
