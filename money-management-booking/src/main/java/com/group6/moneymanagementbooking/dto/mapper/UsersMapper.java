@@ -23,13 +23,13 @@ public class UsersMapper {
                 .lastName("").email(accountDTORegister.getEmail())
                 .password(accountDTORegister.getPassword()).currency("$").phone(accountDTORegister.getPhone())
                 .active(true).nonLocked(true).address(accountDTORegister.getAddress())
-                .active(true).role("ROLE_USER").annuallySpending(0).monthlySaving(0)
+                .role("ROLE_USER").annuallySpending(0).monthlySaving(0)
                 .monthlySpending(0).monthlyEarning(0).build();
     }
 
     public static UsersForAdminDTOResponse toUsersForAdminDTOResponse(Users users) {
-        return UsersForAdminDTOResponse.builder().id(users.getId())
-                .name(users.getFirstName() + " " + users.getLastName())
+        return UsersForAdminDTOResponse.builder().id(users.getId()).avatar(users.getAvatar())
+                .firstName(users.getFirstName()).lastName(users.getLastName())
                 .email(users.getEmail()).phone(users.getPhone()).address(users.getAddress())
                 .failedAttempt(users.getFailed_attempt()).role(users.getRole())
                 .accountNonLocked(users.isNonLocked()).lockTime(users.getLockTime()).active(users.isActive()).build();

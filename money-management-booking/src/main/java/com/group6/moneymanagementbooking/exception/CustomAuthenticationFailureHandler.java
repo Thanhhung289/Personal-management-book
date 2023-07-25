@@ -29,14 +29,12 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
     private final CustomUserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final UsersServiceImpl usersServiceImpl;
-    private final UsersRepository usersRepository;
 
     public CustomAuthenticationFailureHandler(CustomUserDetailsService userDetailsService,
-            PasswordEncoder passwordEncoder, UsersServiceImpl usersServiceImpl, UsersRepository usersRepository) {
+            PasswordEncoder passwordEncoder, UsersServiceImpl usersServiceImpl) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.usersServiceImpl = usersServiceImpl;
-        this.usersRepository = usersRepository;
 
     }
 
@@ -52,7 +50,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         try {
             MyUserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (userDetails.isEnabled()) {
-                Users users = usersRepository.findByEmail(username).get();
+                Users users = usersServiceImpl.getUserByEmail(username);
                 if (users.isNonLocked()) {
                     if (!passwordEncoder.matches(password, users.getPassword())) {
                         usersServiceImpl.checkUnLockUser(users, response);

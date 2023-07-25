@@ -170,8 +170,8 @@ public class DebtorController {
         if (debtor.getTotal() != 0) {
             model.addAttribute("list_debtor", debtorService.findAll(getIdUser()));
             model.addAttribute("record", debtorService.findAll(getIdUser()).size());
-            redirectAttributes.addFlashAttribute("errorMessage",
-                    "Cannot be delete because the debt has not been completed!");
+            redirectAttributes.addAttribute("report",
+                    "Warning: Cannot be delete because the debt has not been completed!");
             return "redirect:/Debtor/ListAll";
         }
         debtorService.deleteDebtorById(id);

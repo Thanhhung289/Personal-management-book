@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.group6.moneymanagementbooking.dto.mapper.UsersMapper;
+
 import com.group6.moneymanagementbooking.dto.response.UsersForAdminDTOResponse;
 import com.group6.moneymanagementbooking.enity.Users;
 import com.group6.moneymanagementbooking.repository.UsersRepository;
@@ -27,6 +28,21 @@ import lombok.RequiredArgsConstructor;
 public class AdminServiceImpl implements AdminService {
     private final UsersRepository usersRepository;
     private final int PAGE_SIZE = 8;
+
+    // unlock user
+    @Override
+    public void unlockUser(int id) throws Exception {
+        Optional<Users> optional = usersRepository.findById(id);
+        if (optional.isPresent()) {
+            Users user = optional.get();
+            user.setNonLocked(true);
+            user.setFailed_attempt(0);
+            user.setLockTime(null);
+            usersRepository.save(user);
+        } else {
+            throw new Exception("User not exist!!");
+        }
+    }
 
     // getting
     // 1. get group of users original
@@ -72,6 +88,18 @@ public class AdminServiceImpl implements AdminService {
         model.addAttribute("data2", totalPage);
         return UsersMapper.toUsersForAdminDTOResponses(listOfActiveUser);
 
+    }
+
+    // 4. get user details
+
+    @Override
+    public UsersForAdminDTOResponse getUserDetailsById(int id) {
+        Optional<Users> optional = usersRepository.findById(id);
+        if (optional.isPresent()) {
+            UsersForAdminDTOResponse userDetail = UsersMapper.toUsersForAdminDTOResponse(optional.get());
+            return userDetail;
+        }
+        return null;
     }
 
     // updating
@@ -207,32 +235,18 @@ public class AdminServiceImpl implements AdminService {
 
     // html layout
     private String tableCellHtmlLayout(Users users) {
-        String data = "<tr id ='user" + users.getId() + "' class = " + (!users.isActive() ? "'red-row'" : "''") + ">";
-        data = data + "<td data-label = 'ID' >" + users.getId() + "</td> \n"
+        String data = "<tr  id ='user" + users.getId() + "' class = " + (!users.isActive() ? "'red-row'" : "''") + ">";
+        data = data + "<td class='text-center' data-label = 'ID' >" + users.getId() + "</td> \n"
                 + "<td  data-label = 'Name' >" + users.getFirstName() + " " + users.getLastName() + "</td> \n"
                 + "<td data-label = 'Email' >" + users.getEmail() + "</td>"
-                + "<td data-label = 'Phone'  class='admin-center-text'>" + users.getPhone() + "</td> \n"
-                + "<td data-label = 'Failed attempt' class='admin-center-text'>" + users.getFailed_attempt()
-                + "</td> \n";
-
-        if (users.getLockTime() != null) {
-            data = data + "<td  data-label = 'Lock time' >" + users.getLockTime() + "</td> \n";
-        } else {
-            data = data + "<td  data-label = 'Lock time' ></td> \n";
-        }
+                + "<td data-label = 'Phone'  class='admin-center-text'>" + users.getPhone() + "</td> \n";
         data = data + "<td data-label = 'Lock' class='status'> \n";
         if (users.isNonLocked()) {
             data = data + "<button class='positive-status'>Non-lock</button> \n";
         } else {
             data = data + "  <button class='negative-status'>Lock</button> \n";
         }
-        data = data + "  </td> \n";
-        data = data + "<td data-label = 'Status' class='status'> \n";
-        if (users.isActive()) {
-            data = data + " <button class='positive-status'>Active</button> \n";
-        } else {
-            data = data + "<button class='negative-status'>De-active</button>";
-        }
+
         data = data + "</td>\n" + "<td data-label = 'Change Status' "
                 + "class='status' onclick='changeStatus(" + users.getId() + "," + users.isActive() + ")'> \n";
         data += "<label class='admin_switch'>";
@@ -242,6 +256,8 @@ public class AdminServiceImpl implements AdminService {
             data = data + "<input type='checkbox' disabled> \n";
         }
         data = data + "<span class='admin_slider admin_round'></span></label></td></tr>";
+        data = data +" <td class='admin_user-details' data-label = 'Details'><a href=/admins/user-details/"+users.getId()+" class='btn btn-warning'>";
+        data = data + "<i class='fas fa-info-circle'></i>Details</a></td></tr>";
         return data;
     }
 
@@ -326,4 +342,5 @@ public class AdminServiceImpl implements AdminService {
         }
         return totalRecords;
     }
+
 }

@@ -24,12 +24,14 @@ public class CustomErrorController implements ErrorController {
             }
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
                 return "errors/404";
-
+            }
+            if(statusCode == HttpStatus.UNAUTHORIZED.value()){
+                return "errors/401";
+            }
+            if(statusCode == HttpStatus.BAD_REQUEST.value()){
+                return "errors/400";
             }
         }
-        // Thêm logic xử lý lỗi tùy chỉnh ở đây
-        // Ví dụ: bạn có thể kiểm tra mã trạng thái và trả về các trang lỗi khác nhau
-        // dựa trên nó
       return "errors/500";
 
     }

@@ -39,7 +39,7 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="card-body" style="display: flex; flex-wrap: wrap; justify-content: center;" >
-                        <img th:src="${userDTOEditProfile.avatar}" alt="Avatar" class=" rounded-circle "
+                        <img th:src="${userDTOEditProfile.avatar == null ? '/image/avata1.jpg': userDTOEditProfile.avatar}" alt="Avatar" class=" rounded-circle "
                             id="img-avatar" style="margin-bottom: 12px; " width="200" height="200">
 
                         <form  th:action="@{/settings/upload-avatar}" method="POST" enctype="multipart/form-data" style="width: 100%; display: flex; justify-content: center; flex-wrap: wrap;">

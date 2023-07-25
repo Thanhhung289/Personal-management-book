@@ -35,11 +35,11 @@ public class AccountsServiceImpl implements AccountsService {
             boolean checkAccountExits = accountsRepository
                     .findByNameAndUser_id(accounts.getName(), accounts.getUserId()).isPresent();
             if (checkAccountExits)
-                throw new Exception("Account name already exists");
+                throw new Exception("Warning: Account name already exists");
             if (accounts.getBalance() < 0)
-                throw new Exception("Balance must be greater than 0");
+                throw new Exception("Warning: Balance must be greater than 0");
             if (accounts.getName().isEmpty())
-                throw new Exception("Name cannot be null");
+                throw new Exception("Warning: Name cannot be null");
             return accountsRepository.save(accounts);
         } catch (Exception e) {
             throw new Exception(e.getMessage());

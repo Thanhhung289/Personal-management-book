@@ -23,27 +23,27 @@ public class OTPService {
         if (otpCheckNull.isPresent()) {
             OTP otp = otpCheckNull.get();
             if (!StringUtils.isNumberic(userOTPInput)) {
-                throw new Exception("OTP is not valid!!!");
+                throw new Exception("Warning: OTP is not valid!!!");
             }
             if(!userOTPInput.equals(otp.getCode())){
-                throw new Exception("OTP not correct!!");
+                throw new Exception("Warning: OTP not correct!!");
             }
 
             if (LocalDateTime.now().isBefore(otp.getDate_create().plusMinutes(1))) {
                 if (!otp.getCode().equals(userOTPInput)) {
-                    throw new Exception("Your OTP is not correct");
+                    throw new Exception("Warning: Your OTP is not correct");
                 }
             } else {
-                throw new Exception("Your OTP is expired!!");
+                throw new Exception("Warning: Your OTP is expired!!");
             }
             if(otp.isUsed()){
-                throw new Exception("This OTP already used");
+                throw new Exception("Warning:This OTP already used");
             }else{
                 otp.setUsed(true);
                 otpRepository.save(otp);
             }
         }else{
-            throw new Exception("Your OTP not exist");
+            throw new Exception("Warning: Your OTP not exist");
         }
     }
 

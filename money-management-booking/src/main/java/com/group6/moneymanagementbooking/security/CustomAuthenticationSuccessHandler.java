@@ -11,27 +11,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
-import com.group6.moneymanagementbooking.enity.Users;
-import com.group6.moneymanagementbooking.repository.UsersRepository;
 
 public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final UsersRepository usersRepository;
-
-    public CustomAuthenticationSuccessHandler(UsersRepository usersRepository) {
-        this.usersRepository = usersRepository;
-    }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
-            String email = request.getParameter("email");
-            Users users = usersRepository.findByEmail(email)
-                    .get();
-            users.setFailed_attempt(0);
-            users.setLockTime(null);
-            users.setLockTime(null);
-            usersRepository.save(users);
             Collection<? extends GrantedAuthority> authorities = authentication
                     .getAuthorities();
             for (GrantedAuthority grantedAuthority : authorities) {
