@@ -498,7 +498,7 @@
     top: 60px;
     left: 0;
     bottom: 0;
-    width: 300px;
+    width: 260px;
     z-index: 996;
     transition: all 0.3s;
     padding: 20px;
@@ -547,7 +547,7 @@
     }
   
     .toggle-sidebar .sidebar {
-      left: -300px;
+      left: -260px;
     }
   }
   

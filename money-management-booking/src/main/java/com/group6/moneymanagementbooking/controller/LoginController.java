@@ -55,7 +55,7 @@ public class LoginController {
             @ModelAttribute("usersDTORegister") UsersDTORegisterRequest userDTORegister) throws Exception {
         List<String> report = new ArrayList<String>();
         userService.checkUserRegister(report, userDTORegister, request);
-        if (report.isEmpty()) {
+        if (!report.isEmpty()) {
             redirectAttributes.addAttribute("error", report);
             return "redirect:/register";
         }

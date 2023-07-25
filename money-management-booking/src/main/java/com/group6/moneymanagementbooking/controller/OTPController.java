@@ -47,7 +47,7 @@ public class OTPController {
                 emailService.sendVerifyEmail(email, "Dear MyFriend, ", htmlContent);
                 System.out.println("Mail sent successfully.");
             } catch (EmailException e) {
-                 throw new Exception(e.getMessage());
+                throw new Exception(e.getMessage());
             }
             OTP otp = OTP.builder().date_create(LocalDateTime.now()).email(email).code(String.valueOf(otpCode)).build();
             otpService.saveOTP(otp);
@@ -83,8 +83,10 @@ public class OTPController {
             if (session.getAttribute("userRegister") == null && session.getAttribute("changePassword") == null) {
                 out.println("resetPassword");
             } else {
-                out.println("login");
+                session.removeAttribute("userRegister");
+                session.removeAttribute("changePassword");
                 session.removeAttribute("emailOTP");
+                out.println("login");
             }
         }
     }
@@ -95,7 +97,6 @@ public class OTPController {
                     .getAttribute("userRegister");
             if (userEmailOTP.equals(usersDTORegisterRequest.getEmail())) {
                 usersService.addUser(usersDTORegisterRequest);
-                session.removeAttribute("userRegister");
             }
         }
     }
