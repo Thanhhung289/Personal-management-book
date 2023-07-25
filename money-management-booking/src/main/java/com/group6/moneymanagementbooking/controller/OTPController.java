@@ -44,8 +44,7 @@ public class OTPController {
             int otpCode = NumberUtils.getRandomInt(100000, 999999);
             String htmlContent = otpService.OTPEmailTemplate(String.valueOf(otpCode));
             try {
-                emailService.sendVerifyEmail(email, "Dear MyFriend, ", htmlContent);
-                System.out.println("Mail sent successfully.");
+                emailService.sendVerifyEmail(email, "Personal Money Management Book, ", htmlContent);
             } catch (EmailException e) {
                 throw new Exception(e.getMessage());
             }
@@ -54,7 +53,6 @@ public class OTPController {
         } else {
             throw new Exception("Không tồn tại email");
         }
-
     }
 
     @GetMapping(value = { "", "/", "index" })
@@ -78,15 +76,22 @@ public class OTPController {
         } catch (Exception e) {
             report = e.getMessage();
             out.println(e.getMessage());
+            return;
         }
         if (report.isEmpty()) {
             if (session.getAttribute("userRegister") == null && session.getAttribute("changePassword") == null) {
                 out.println("resetPassword");
+                return;
             } else {
+            session.removeAttribute("emailOTP");
+                if (session.getAttribute("changePassword") != null) {
+                    session.removeAttribute("changePassword");
+                    out.println("logout");
+                    return;
+                }
                 session.removeAttribute("userRegister");
-                session.removeAttribute("changePassword");
-                session.removeAttribute("emailOTP");
                 out.println("login");
+                return;
             }
         }
     }

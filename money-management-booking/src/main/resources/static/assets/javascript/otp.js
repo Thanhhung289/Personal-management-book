@@ -14,6 +14,8 @@ function confirmOTP() {
           window.location = "/login";
         } else if (report.includes('resetPassword')) {
           window.location = "/forgot-password";
+        } else if (report.includes('logout')) {
+          window.location = "/logout";
         } else {
           openPopup(data);
         }
