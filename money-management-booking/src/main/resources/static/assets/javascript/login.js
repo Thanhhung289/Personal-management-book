@@ -12,11 +12,11 @@ function report(error, turn) {
      
     }
     else if (error == "disabled") {
-      $('#report').html(" Warning: Your account has been disabled!!");
+      $('#report').html("Warning: Your account has been disabled!!");
     }else if(error == 'null'){
-      $('#report').html(" Warning: Data cannot be null!!");
+      $('#report').html("Warning: Data cannot be null!!");
     }else if(error == 'captcha'){
-      $('#report').html(" Warning: Captcha invalid");
+      $('#report').html("Warning: Captcha is not verify");
     }
     else{
       $('#report').html("Warning: Email or password not correct!!");

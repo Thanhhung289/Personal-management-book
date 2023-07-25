@@ -13,26 +13,29 @@ import java.io.IOException;
 
 public class CaptchaAuthenticationFilter extends OncePerRequestFilter {
 
-
-
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String[] captchaVerifyURL = {"/login", "/register", "/forgot-password"};
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        String[] captchaVerifyURL = { "/login", "/register", "/find-email" };
         if (isLoginRequest(request, captchaVerifyURL) && isPostMethod(request)) {
             String captchaResponse = request.getParameter("g-recaptcha-response");
 
             if (captchaResponse == null || captchaResponse.isEmpty() || !CaptchaServiceUtils.verify(captchaResponse)) {
-                response.sendRedirect(request.getRequestURI() + "?error=captcha");
-                return;
+                if (request.getRequestURI().equals("/login")) {
+                    response.sendRedirect(request.getRequestURI() + "?error=captcha");
+                    return;
+                } else {
+                    response.sendRedirect(request.getRequestURI() + "?error=Warning: Captcha is not verify");
+                    return;
+                }
             }
         }
-
         filterChain.doFilter(request, response);
     }
 
     private boolean isLoginRequest(HttpServletRequest request, String[] captchaVerifyURL) {
         for (String string : captchaVerifyURL) {
-            if(string.equals(request.getRequestURI())){
+            if (string.equals(request.getRequestURI())) {
                 return true;
             }
         }
@@ -43,4 +46,3 @@ public class CaptchaAuthenticationFilter extends OncePerRequestFilter {
         return "POST".equalsIgnoreCase(request.getMethod());
     }
 }
-
