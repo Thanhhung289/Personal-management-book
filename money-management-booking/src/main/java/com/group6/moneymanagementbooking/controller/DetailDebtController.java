@@ -109,10 +109,17 @@ public class DetailDebtController {
 
     @PostMapping("/Update/{id}")
     public RedirectView UpdateDebt(Model model, @PathVariable("id") int id,
-            @ModelAttribute("debtor") Debt_detail newdebt_detail) {
+            @ModelAttribute("debtor") Debt_detail newdebt_detail, RedirectAttributes redirectAttributes) {
+
         Debt_detail deb = detailDebtService.findById(id);
         newdebt_detail.setId(deb.getId());
+        if (!newdebt_detail.getAccounts().isActive()) {
+            RedirectView redirectView = new RedirectView();
+            redirectView.setUrl("/Debtor/Detail/view-detail/" + deb.getDeptorId());
+            redirectAttributes.addAttribute("report", "Warning: Your account is inactive!");
+        }
         detailDebtService.UpdateDebt(deb, newdebt_detail);
+
         RedirectView redirectView = new RedirectView();
         redirectView.setUrl("/Debtor/Detail/view-detail/" + deb.getDeptorId());
         return redirectView;

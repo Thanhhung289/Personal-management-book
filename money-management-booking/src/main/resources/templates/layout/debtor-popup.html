@@ -96,7 +96,7 @@ aria-labelledby="addModalLabel" aria-hidden="true">
                             </label>
                         </div>
                         <div class="col-md-9">
-                            <input placeholder="Enter Name" type="text" class="form-control" name="name"
+                            <input required placeholder="Enter Name" type="text" class="form-control" name="name"
                                 th:value="${item.name}">
                             <input type="hidden" class="form-control" th:value="${item.userId}" name="userId">
                             <input type="hidden" class="form-control" th:value="${item.id}" name="id">
@@ -111,7 +111,7 @@ aria-labelledby="addModalLabel" aria-hidden="true">
                             </label>
                         </div>
                         <div class="col-md-9">
-                            <input placeholder="Enter Address" type="text" class="form-control" name="address"
+                            <input required placeholder="Enter Address" type="text" class="form-control" name="address"
                                 th:value="${item.address}">
                         </div>
                     </div>
@@ -122,7 +122,7 @@ aria-labelledby="addModalLabel" aria-hidden="true">
                             </label>
                         </div>
                         <div class="col-md-9">
-                            <input placeholder="Enter phone number at least 10 numbers! " type="number"
+                            <input required placeholder="Enter phone number at least 10 numbers! " type="number"
                                 class="form-control" name="phone" th:value="${item.phone}">
 
                         </div>
@@ -134,7 +134,7 @@ aria-labelledby="addModalLabel" aria-hidden="true">
                             </label>
                         </div>
                         <div class="col-md-9">
-                            <input placeholder="Enter email" type="email" class="form-control" name="email"
+                            <input required placeholder="Enter email" type="email" class="form-control" name="email"
                                 th:value="${item.email}">
                         </div>
                     </div>
