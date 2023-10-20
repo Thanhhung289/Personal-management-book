@@ -117,37 +117,6 @@ document.getElementById("filterForm").onsubmit = function (event) {
 };
 
 
-
-// function submitSearchAndFilterForm() {
-//     var nameDebtor = document.getElementById("nameDebtor").value;
-//     var filterValueStart = document.getElementById("filterValueStart").value;
-//     var filterValueEnd = document.getElementById("filterValueEnd").value;
-//     var formAction;
-
-//     if (filterValueStart !== "" || filterValueEnd !== "") {
-//         formAction = "/Debtor/Filter";
-//         if (nameDebtor !== "") {
-//             formAction += "?nameDebtor=" + encodeURIComponent(nameDebtor);
-//         }
-//         if (filterValueStart !== "" || filterValueEnd !== "") {
-//             if (formAction.includes("?")) {
-//                 formAction += "&";
-//             } else {
-//                 formAction += "?";
-//             }
-//             formAction += "filterValueStart=" + encodeURIComponent(filterValueStart) + "&filterValueEnd=" + encodeURIComponent(filterValueEnd);
-//         }
-//     } else {
-//         formAction = "/Debtor/Search";
-//         if (nameDebtor !== "") {
-//             formAction += "?nameDebtor=" + encodeURIComponent(nameDebtor);
-//         }
-//     }
-
-//     document.getElementById("searchAndFilterForm").action = formAction;
-//     document.getElementById("searchAndFilterForm").submit();
-// }
-
 document.addEventListener('DOMContentLoaded', function () {
     var clearButton = document.getElementById('clearButton');
     clearButton.addEventListener('click', function () {

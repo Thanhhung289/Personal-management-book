@@ -17,14 +17,5 @@ public class PaginationUtil {
         int end = Math.min((start + pageable.getPageSize()), items.size());
         return new PageImpl<>(items.subList(start, end), pageable, items.size());
     }
-    // public static <T> Page<T> paginate(Pageable pageable, List<T> items) {
-    // int start = (int) pageable.getOffset();
-    // int end = Math.min((start + pageable.getPageSize()), items.size());
 
-    // if (start >= items.size()) {
-    // start = Math.max(0, items.size() - pageable.getPageSize());
-    // }
-
-    // return new PageImpl<>(items.subList(start, end), pageable, items.size());
-    // }
 }

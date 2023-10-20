@@ -84,16 +84,16 @@
                                 </div>
 
                                 <div class="float-right">
-                                    <a type="button" th:href="@{/Debtor/ListAll}" title="List All"
+                                    <a type="button" th:href="@{/debtor/list-all}" title="List All"
                                         class="mr-1 btn btn-primary" style="border-radius: 20px;">List All</a>
                                 </div>
 
                                 <div class="float-right">
-                                    <a type="button" th:href="@{/Debtor/ListOwner}" title="List Owner"
+                                    <a type="button" th:href="@{/debtor/list-owner}" title="List Owner"
                                         class="mr-1 btn btn-primary" style="border-radius: 20px;">List Owner</a>
                                 </div>
                                 <div class="float-right">
-                                    <a type="button" th:href="@{/Debtor/ListDebtor}" class="mr-1 btn btn-primary"
+                                    <a type="button" th:href="@{/debtor/list-debtor}" class="mr-1 btn btn-primary"
                                         style="border-radius: 20px;">List Debtor</a>
                                 </div>
 
@@ -116,7 +116,7 @@
 
                         <div style="display: flex; justify-content: space-between;">
                             <div>
-                                <form th:action="@{/Debtor/Search}" method="get">
+                                <form th:action="@{/debtor/search}" method="get">
                                     <div class="input-group">
                                         <div class="form-outline">
                                             <input type="search" name="nameDebtor" th:value="${nameDebtor}"
@@ -134,7 +134,7 @@
 
                             <div style="margin-right: 50px; margin-top: 10px;">
 
-                                <form th:action="@{/Debtor/Filter}" method="get" id="filterForm">
+                                <form th:action="@{/debtor/filter}" method="get" id="filterForm">
                                     <div class="input-group">
                                         <select id="filterType" name="filterType" class="form-control"
                                             style="border-radius: 15px; margin-right: 10px;">
@@ -213,24 +213,18 @@
 
                                             <td>
                                                 <div style="margin: auto; text-align:center">
-                                                    <a th:href="@{'/Debtor/Detail/view-detail/' + ${item.id}}"
+                                                    <a th:href="@{'/debtor/detail/view-detail/' + ${item.id}}"
                                                         class="btn btn-primary"><i class="fas fa-info-circle"></i>
                                                         Details
                                                     </a>
 
-                                                    <!-- <a th:href="@{'/Debtor/edit/' + ${item.id}}" title="Edit"
-                                                        class="btn btn-warning"><i class="fa fa-pencil"></i>
-                                                        Edit
-                                                    </a> -->
                                                     <a class="btn btn-warning" data-toggle="modal"
                                                         th:data-target="'#editModal' + ${item.id}">
                                                         <i class="fa fa-pencil"></i>
                                                         Edit
                                                     </a>
 
-
-
-                                                    <a th:href="@{'/Debtor/delete/' + ${item.id}}"
+                                                    <a th:href="@{'/debtor/delete/' + ${item.id}}"
                                                         class="btn btn-danger"
                                                         onclick="return confirm('Are you sure you want to delete?');"><i
                                                             class="fa fa-exclamation-circle"></i>

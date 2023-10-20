@@ -136,14 +136,14 @@
             </li><!-- End Error 404 Page Nav -->
 
             <li class="nav-item"
-                th:classappend="${#httpServletRequest.requestURI == '/Debtor/ListAll' ? 'current-nav' : ''}">
-                <a class="nav-link collapsed" th:href="@{/Debtor/ListAll}">
+                th:classappend="${#httpServletRequest.requestURI == 'debtor/list-all' ? 'current-nav' : ''}">
+                <a class="nav-link collapsed" th:href="@{/debtor/list-all}">
                     <i class="fa-solid fa-money-bill-transfer icon"></i>
                     <span>Debt</span>
                 </a>
             </li><!-- End Blank Page Nav -->
             <li class="nav-item"
-                th:classappend="${#httpServletRequest.requestURI == '/Debtor/ListAll' ? 'current-nav' : ''}">
+                th:classappend="${#httpServletRequest.requestURI == '/debtor/list-all' ? 'current-nav' : ''}">
 
                 <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
                     <i class="fa-solid fa-gear icon"></i>

@@ -2,7 +2,7 @@
 
 <div th:fragment="add-debtor-popup()" class="modal fade" id="addModal" tabindex="-1" role="dialog"
 aria-labelledby="addModalLabel" aria-hidden="true">
-<form th:action="@{/Debtor/Add}" th:object="${debtor}" method="post">
+<form th:action="@{/debtor/add}" th:object="${debtor}" method="post">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content rounded-popup">
             <div class="modal-header">
@@ -78,7 +78,7 @@ aria-labelledby="addModalLabel" aria-hidden="true">
 
 <div th:fragment="edit-debtor-popup(item)" class="modal fade" th:id="'editModal'+${item.id}" tabindex="-1" role="dialog"
     th:aria-labelledby="'editModalLabel' + ${item.id}" aria-hidden="true">
-    <form th:action="@{/Debtor/update}" method="post">
+    <form th:action="@{/debtor/update}" method="post">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content rounded-popup">
                 <div class="modal-header">

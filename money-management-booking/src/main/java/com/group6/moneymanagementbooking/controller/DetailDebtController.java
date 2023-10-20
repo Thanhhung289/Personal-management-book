@@ -33,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 @CrossOrigin
-@RequestMapping("/Debtor/Detail")
+@RequestMapping("/debtor/detail")
 public class DetailDebtController {
     private final DetailDebtService detailDebtService;
     private final DebtorService debtorService;
@@ -54,23 +54,13 @@ public class DetailDebtController {
 
         Debt_detail debt_detail = new Debt_detail();
         debt_detail.setDeptorId(id);
-        // model.addAttribute("errorMessage", errorMessage);
-        // model.addAttribute("listAccount",
-        // accountsService.findAllByUserId(getIdUser()));
-        // model.addAttribute("debt_detail", debt_detail);
 
-        // model.addAttribute("listAcc",
-        // accountsService.findAllByUserId(getIdUser()).size());
-        // model.addAttribute("debtor", debtorService.getDebtorById(id));
-        // model.addAttribute("page", itemsPage);
-        // model.addAttribute("link", currentRequestMapping);
-        // return "view-debt";
         return dispathcher(model, debt_detail,
                 errorMessage,
                 itemsPage, currentRequestMapping, "", "", "");
     }
 
-    @PostMapping("/Add")
+    @PostMapping("/add")
     public RedirectView addDetailDebt(Model model, @ModelAttribute("debt_detail") Debt_detail detail_edbt,
             HttpServletRequest request, RedirectAttributes redirectAttributes)
             throws Exception {
@@ -79,35 +69,34 @@ public class DetailDebtController {
         if (!acc.isActive()) {
 
             RedirectView redirectView = new RedirectView();
-            redirectView.setUrl("/Debtor/Detail/view-detail/" + detail_edbt.getDeptorId());
+            redirectView.setUrl("/debtor/detail/view-detail/" + detail_edbt.getDeptorId());
             redirectAttributes.addAttribute("report", "Warning: Your account is inactive!");
             return redirectView;
         }
         if ((detail_edbt.isClassify() && (detail_edbt.getMoney_debt() > acc.getBalance()))) {
-            // RedirectAttributes redirectAttributes ;
 
             RedirectView redirectView = new RedirectView();
-            redirectView.setUrl("/Debtor/Detail/view-detail/" + detail_edbt.getDeptorId());
+            redirectView.setUrl("/debtor/detail/view-detail/" + detail_edbt.getDeptorId());
             redirectAttributes.addAttribute("report", "Warning: The amount you entered exceeds the account balance!");
             return redirectView;
         }
 
         detailDebtService.Save(detail_edbt);
         RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("/Debtor/Detail/view-detail/" + detail_edbt.getDeptorId());
+        redirectView.setUrl("/debtor/detail/view-detail/" + detail_edbt.getDeptorId());
         return redirectView;
     }
 
-    @GetMapping("/Delete/{id}")
+    @GetMapping("/delete/{id}")
     public RedirectView deleteDeatil(Model model, @PathVariable("id") int id) {
         Debt_detail deb = detailDebtService.findById(id);
         detailDebtService.deleteDebtById(id);
         RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("/Debtor/Detail/view-detail/" + deb.getDeptorId());
+        redirectView.setUrl("/debtor/detail/view-detail/" + deb.getDeptorId());
         return redirectView;
     }
 
-    @PostMapping("/Update/{id}")
+    @PostMapping("/update/{id}")
     public RedirectView UpdateDebt(Model model, @PathVariable("id") int id,
             @ModelAttribute("debtor") Debt_detail newdebt_detail, RedirectAttributes redirectAttributes) {
 
@@ -115,17 +104,17 @@ public class DetailDebtController {
         newdebt_detail.setId(deb.getId());
         if (!newdebt_detail.getAccounts().isActive()) {
             RedirectView redirectView = new RedirectView();
-            redirectView.setUrl("/Debtor/Detail/view-detail/" + deb.getDeptorId());
+            redirectView.setUrl("/debtor/detail/view-detail/" + deb.getDeptorId());
             redirectAttributes.addAttribute("report", "Warning: Your account is inactive!");
         }
         detailDebtService.UpdateDebt(deb, newdebt_detail);
 
         RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("/Debtor/Detail/view-detail/" + deb.getDeptorId());
+        redirectView.setUrl("/debtor/detail/view-detail/" + deb.getDeptorId());
         return redirectView;
     }
 
-    @GetMapping("/Details/{id}")
+    @GetMapping("/details/{id}")
     public String editDebt(Model model, @PathVariable("id") int id) {
         Debt_detail deb = detailDebtService.findById(id);
         model.addAttribute("debtor", debtorService.getDebtorById(deb.getDeptorId()));
@@ -134,7 +123,7 @@ public class DetailDebtController {
         return "view-detaildebt";
     }
 
-    @GetMapping("/Filter")
+    @GetMapping("/filter")
     public String searchDebtor(Model model,
             @RequestParam(value = "filterType", required = false) String filterType,
             @RequestParam(value = "filterValueStart", required = false) String filterValueStart,
@@ -151,22 +140,10 @@ public class DetailDebtController {
 
         Debt_detail debt_detail = new Debt_detail();
         debt_detail.setDeptorId(idDebtor);
-        // model.addAttribute("errorMessage", "");
-        // model.addAttribute("listAccount",
-        // accountsService.findAllByUserId(getIdUser()));
-        // model.addAttribute("debt_detail", debt_detail);
-        // model.addAttribute("listAcc",
-        // accountsService.findAllByUserId(getIdUser()).size());
-        // model.addAttribute("debtor", debtorService.getDebtorById(idDebtor));
-        // model.addAttribute("filterType", filterType);
-        // model.addAttribute("filterValueStart", filterValueStart);
-        // model.addAttribute("filterValueEnd", filterValueEnd);
-        // model.addAttribute("page", itemsPage);
-        // model.addAttribute("link", currentRequestMapping);
+
         return dispathcher(model, debt_detail, "", itemsPage,
                 currentRequestMapping, filterType, filterValueStart,
                 filterValueEnd);
-        // return "view-debt";
 
     }
 
