@@ -38,14 +38,17 @@ public class Debt_detail {
     private int deptorId;
 
     private String note;
+
     private double money_debt;
+
     private boolean classify;
+
     @Column(name = "date_debt")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime date_create;
 
     @ManyToOne
-    @JoinColumn(name = "account_id") // thông qua khóa ngoại address_id
+    @JoinColumn(name = "account_id")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Accounts accounts;

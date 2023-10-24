@@ -29,30 +29,39 @@ public class SpringSecurity {
         private final UsersServiceImpl usersServiceImpl;
         private final UsersService usersService;
         private final AccountsService accountsService;
+
         @Bean
         public static PasswordEncoder passwordEncoder() {
                 return new BCryptPasswordEncoder();
         }
+
         @Bean
         public CustomAuthenticationFailureHandler authenticationFailureHandler() {
                 return new CustomAuthenticationFailureHandler(userDetailsService, passwordEncoder(), usersServiceImpl);
         }
+
         @Bean
-        public BeforeAuthenticationFilter beforeAuthenticationFilter(AccountsService accountsService,                                                                     UsersService usersService) {
-            return new BeforeAuthenticationFilter(accountsService, usersService);
+        public BeforeAuthenticationFilter beforeAuthenticationFilter(AccountsService accountsService,
+                        UsersService usersService) {
+                return new BeforeAuthenticationFilter(accountsService, usersService);
         }
-        @Bean 
-        CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler(){
+
+        @Bean
+        CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler() {
                 return new CustomAuthenticationSuccessHandler();
         }
+
         @Bean
         public CaptchaAuthenticationFilter captchaValidationFilter() {
-            return new CaptchaAuthenticationFilter();
+                return new CaptchaAuthenticationFilter();
         }
+
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-                http.addFilterBefore(new BeforeAuthenticationFilter(accountsService, usersService),UsernamePasswordAuthenticationFilter.class)
-                .csrf().disable().authorizeHttpRequests((authorize) -> authorize.mvcMatchers("/register").permitAll()
+                http.addFilterBefore(new BeforeAuthenticationFilter(accountsService, usersService),
+                                UsernamePasswordAuthenticationFilter.class)
+                                .csrf().disable()
+                                .authorizeHttpRequests((authorize) -> authorize.mvcMatchers("/register").permitAll()
                                                 .mvcMatchers("/check/**").permitAll()
                                                 .mvcMatchers("/find-email").permitAll()
                                                 .mvcMatchers("/otps/**").permitAll()
@@ -61,24 +70,27 @@ public class SpringSecurity {
                                                 .mvcMatchers("/forgot-password").permitAll()
                                                 .mvcMatchers("/login").permitAll()
                                                 .mvcMatchers("/admins/**").hasRole("ADMIN")
-                                                .anyRequest().authenticated()
-                                ).formLogin(form -> form.loginPage("/login")
+                                                .anyRequest().authenticated())
+                                .formLogin(form -> form.loginPage("/login")
                                                 .usernameParameter("email")
                                                 .passwordParameter("password")
                                                 .failureUrl("/login?error=true")
                                                 .failureHandler(authenticationFailureHandler())
                                                 .defaultSuccessUrl("/", false)
                                                 .successHandler(customAuthenticationSuccessHandler()).permitAll())
-                                                .addFilterBefore(captchaValidationFilter(), UsernamePasswordAuthenticationFilter.class)
-                                .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll())
+                                .addFilterBefore(captchaValidationFilter(), UsernamePasswordAuthenticationFilter.class)
+                                .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                                                .permitAll())
                                 .rememberMe().key("Axncmvi2002")
                                 .tokenValiditySeconds(60 * 60 * 24 * 10 * 30);
                 return http.build();
         }
+
         @Autowired
         public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
                 auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
         }
+
         @Bean
         public WebSecurityCustomizer webSecurityCustomizer() {
                 return (web) -> web.ignoring().antMatchers("/assets/**", "/image/**");

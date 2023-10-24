@@ -28,10 +28,14 @@ public class Accounts {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column(name = "user_id")
     private int userId;
+
     private String name;
+
     private double balance;
+
     @Column(name = "is_active")
     private boolean active;
 

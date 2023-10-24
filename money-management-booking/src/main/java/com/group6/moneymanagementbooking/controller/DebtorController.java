@@ -36,42 +36,42 @@ public class DebtorController {
 
     @GetMapping("/list-all")
     public String listDebtor(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "6") int pageSize,
-            Model model, HttpServletRequest request, @ModelAttribute("errorMessage") String errorMessage) {
-
+            Model model, HttpServletRequest request) {
         Pageable pageable = PaginationUtil.getPageable(page, pageSize);
         Page<Debtor> itemsPage = PaginationUtil.paginate(pageable, debtorService.findAll(getIdUser()));
         String currentRequestMapping = request.getRequestURI();
-
-        return dispathcher(model, errorMessage, itemsPage, currentRequestMapping);
+        return dispathcher(model, itemsPage, currentRequestMapping);
     }
 
     @GetMapping("/list-debtor")
     public String AllDebtor(Model model, @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "6") int pageSize, HttpServletRequest request) {
-
         List<Debtor> listdeb = debtorService.getListDebtor();
         Pageable pageable = PaginationUtil.getPageable(page, pageSize);
         Page<Debtor> itemsPage = PaginationUtil.paginate(pageable, listdeb);
         String currentRequestMapping = request.getRequestURI();
-
-        return dispathcher(model, "", itemsPage, currentRequestMapping);
+        return dispathcher(model, itemsPage, currentRequestMapping);
     }
 
     @GetMapping("/list-owner")
     public String AllOwner(Model model, @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "6") int pageSize, HttpServletRequest request) {
-
         List<Debtor> listdeb = debtorService.getListOwner();
         Pageable pageable = PaginationUtil.getPageable(page, pageSize);
         Page<Debtor> itemsPage = PaginationUtil.paginate(pageable, listdeb);
         String currentRequestMapping = request.getRequestURI();
-
-        return dispathcher(model, "", itemsPage, currentRequestMapping);
+        return dispathcher(model, itemsPage, currentRequestMapping);
     }
 
     @PostMapping("/add")
-    public String addNew(@ModelAttribute("debtor") Debtor debtor) throws Exception {
-        debtorService.Save(debtor);
+    public String addNew(@ModelAttribute("debtor") Debtor debtor, RedirectAttributes redirectAttributes)
+            throws Exception {
+        if (!debtorService.Save(debtor)) {
+            redirectAttributes.addAttribute("report",
+                    "Email or phone number is existing. Save failed!");
+        } else {
+            redirectAttributes.addAttribute("report", "Save successfully!");
+        }
         return "redirect:/debtor/list-all";
     }
 
@@ -92,13 +92,11 @@ public class DebtorController {
         model.addAttribute("nameDebtor", name);
         model.addAttribute("page", itemsPage);
         model.addAttribute("link", currentRequestMapping);
-
         return "view-debtor";
     }
 
     @GetMapping("/filter")
     public String searchDebtor(Model model,
-            @RequestParam(value = "nameDebtor", required = false) String name,
             @RequestParam(value = "filterType", required = false) String filterType,
             @RequestParam(value = "filterValueStart", required = false) String filterValueStart,
             @RequestParam(value = "filterValueEnd", required = false) String filterValueEnd,
@@ -107,7 +105,7 @@ public class DebtorController {
             HttpServletRequest request) throws Exception {
 
         String currentRequestMapping = request.getRequestURI();
-        List<Debtor> items = debtorService.FilterDebtor(filterType, name, filterValueStart, filterValueEnd);
+        List<Debtor> items = debtorService.FilterDebtor(filterType, filterValueStart, filterValueEnd);
         Pageable pageable = PaginationUtil.getPageable(page, pageSize);
         Page<Debtor> itemsPage = PaginationUtil.paginate(pageable, items);
         Debtor debtor = new Debtor();
@@ -149,13 +147,12 @@ public class DebtorController {
         return users.getId();
     }
 
-    private String dispathcher(Model model, String errorMessage, Page<Debtor> itemsPage,
+    private String dispathcher(Model model, Page<Debtor> itemsPage,
             String currentRequestMapping) {
         Debtor debtor = new Debtor();
         debtor.setUserId(getIdUser());
-        model.addAttribute("debtor", debtor);
 
-        model.addAttribute("mess", errorMessage);
+        model.addAttribute("debtor", debtor);
         model.addAttribute("page", itemsPage);
         model.addAttribute("link", currentRequestMapping);
         return "view-debtor";

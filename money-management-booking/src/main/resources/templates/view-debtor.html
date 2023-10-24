@@ -18,8 +18,6 @@
         <script src="https://kit.fontawesome.com/3098a9fa7b.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
             integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-            
-    
 
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -28,8 +26,6 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         
-
-
         <style>
             /* CSS cho dòng chẵn */
             tr:nth-child(odd) {
@@ -51,10 +47,7 @@
             }
         </style>
     </th:block>
-
-
     <title>Debtors List</title>
-
 </head>
 
 <body>
@@ -102,11 +95,11 @@
                                         data-target="#addModal" style="border-radius: 20px;"><i class="fa fa-plus"></i>
                                         Add New Debtor
                                     </button>
+
+                                    <!-- nhung popup -->
                                     <div th:replace="layout/debtor-popup :: add-debtor-popup()"></div>
 
                                 </div>
-
-
                             </div>
 
                             <div class="float-right">
@@ -276,16 +269,11 @@
                 </div>
             </div>
         </div>
-        <!-- </div> -->
     </th:block>
 
-
     <th:block id="admin_javascript">
-
-    <script th:src="@{/assets/javascript/debtor.js}"></script>
-    <script th:src="@{/assets/javascript/numtoword.js}"></script>
-
-
+      <script th:src="@{/assets/javascript/debtor.js}"></script>
+      <script th:src="@{/assets/javascript/numtoword.js}"></script>
     </th:block>
 
 </html>

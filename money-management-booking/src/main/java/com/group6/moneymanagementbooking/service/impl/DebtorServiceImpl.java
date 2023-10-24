@@ -12,9 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.group6.moneymanagementbooking.enity.Debtor;
 import com.group6.moneymanagementbooking.enity.Users;
+import com.group6.moneymanagementbooking.exception.SystemBadRequestException;
 import com.group6.moneymanagementbooking.repository.DebtorRepository;
 import com.group6.moneymanagementbooking.service.DebtorService;
 import com.group6.moneymanagementbooking.service.UsersService;
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+
 public class DebtorServiceImpl implements DebtorService {
 
   private final DebtorRepository debtorRepository;
@@ -38,16 +41,29 @@ public class DebtorServiceImpl implements DebtorService {
         return Integer.compare(debtor2.getId(), debtor1.getId());
       }
     });
-
     return debtorList;
   }
 
   @Override
-  public Debtor Save(Debtor debtor) {
-    debtor.setTotal(0.0);
-    debtor.setDate_create(LocalDateTime.now());
-    debtor.setDate_update(LocalDateTime.now());
-    return debtorRepository.save(debtor);
+  public boolean Save(Debtor debtor) {
+    List<Debtor> listDebt = debtorRepository.findAll();
+    boolean valid = true;
+
+    for (Debtor debtor2 : listDebt) {
+      if ((debtor.getEmail().equals(debtor2.getEmail())) || (debtor.getPhone().equals(debtor2.getPhone()))) {
+        valid = false;
+        break;
+      }
+    }
+
+    if (valid == true) {
+      debtor.setTotal(0.0);
+      debtor.setDate_create(LocalDateTime.now());
+      debtor.setDate_update(LocalDateTime.now());
+      debtorRepository.save(debtor);
+    }
+
+    return valid;
   }
 
   @Override
@@ -102,11 +118,11 @@ public class DebtorServiceImpl implements DebtorService {
   }
 
   @Override
-  public List<Debtor> FilterDebtor(String filterType, String name, String filterValueStart, String filterValueEnd) {
+  public List<Debtor> FilterDebtor(String filterType, String filterValueStart, String filterValueEnd) {
     List<Debtor> listdebtor = new ArrayList<>();
-    if (name == null) {
-      name = "";
-    }
+    // if (name == null) {
+    // name = "";
+    // }
 
     if ("total".equals(filterType)) {
       if (filterValueStart != "" && filterValueEnd != "") {
@@ -115,7 +131,6 @@ public class DebtorServiceImpl implements DebtorService {
           Double to = Double.parseDouble(filterValueEnd.trim());
           listdebtor = debtorRepository.findAllByTotal(getIdUser(), from, to);
         } catch (NumberFormatException e) {
-          // Xử lý ngoại lệ khi không thể chuyển đổi thành số
           e.printStackTrace();
         }
       } else if (filterValueStart == "" && filterValueEnd == "") {

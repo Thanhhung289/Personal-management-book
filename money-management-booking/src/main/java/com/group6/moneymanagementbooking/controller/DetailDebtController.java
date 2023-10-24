@@ -44,45 +44,35 @@ public class DetailDebtController {
 
     @GetMapping("/view-detail/{id}")
     public String listDetailDebt(Model model, @PathVariable("id") int id, @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "6") int pageSize, HttpServletRequest request,
-            @ModelAttribute("errorMessage") String errorMessage) {
+            @RequestParam(defaultValue = "6") int pageSize, HttpServletRequest request) {
         idDebtor = id;
         Pageable pageable = PaginationUtil.getPageable(page, pageSize);
         List<Debt_detail> items = detailDebtService.findAllById(id);
         Page<Debt_detail> itemsPage = PaginationUtil.paginate(pageable, items);
         String currentRequestMapping = request.getRequestURI();
-
         Debt_detail debt_detail = new Debt_detail();
         debt_detail.setDeptorId(id);
-
-        return dispathcher(model, debt_detail,
-                errorMessage,
-                itemsPage, currentRequestMapping, "", "", "");
+        return dispathcher(model, debt_detail, itemsPage, currentRequestMapping, "", "", "");
     }
 
     @PostMapping("/add")
     public RedirectView addDetailDebt(Model model, @ModelAttribute("debt_detail") Debt_detail detail_edbt,
             HttpServletRequest request, RedirectAttributes redirectAttributes)
             throws Exception {
+        RedirectView redirectView = new RedirectView();
 
         Accounts acc = accountsService.findById(detail_edbt.getAccounts().getId());
         if (!acc.isActive()) {
-
-            RedirectView redirectView = new RedirectView();
             redirectView.setUrl("/debtor/detail/view-detail/" + detail_edbt.getDeptorId());
-            redirectAttributes.addAttribute("report", "Warning: Your account is inactive!");
+            redirectAttributes.addAttribute("report", "Error: Your account is inactive!");
             return redirectView;
         }
         if ((detail_edbt.isClassify() && (detail_edbt.getMoney_debt() > acc.getBalance()))) {
-
-            RedirectView redirectView = new RedirectView();
             redirectView.setUrl("/debtor/detail/view-detail/" + detail_edbt.getDeptorId());
-            redirectAttributes.addAttribute("report", "Warning: The amount you entered exceeds the account balance!");
+            redirectAttributes.addAttribute("report", "Error: The amount you entered exceeds the account balance!");
             return redirectView;
         }
-
         detailDebtService.Save(detail_edbt);
-        RedirectView redirectView = new RedirectView();
         redirectView.setUrl("/debtor/detail/view-detail/" + detail_edbt.getDeptorId());
         return redirectView;
     }
@@ -99,17 +89,16 @@ public class DetailDebtController {
     @PostMapping("/update/{id}")
     public RedirectView UpdateDebt(Model model, @PathVariable("id") int id,
             @ModelAttribute("debtor") Debt_detail newdebt_detail, RedirectAttributes redirectAttributes) {
-
+        RedirectView redirectView = new RedirectView();
         Debt_detail deb = detailDebtService.findById(id);
         newdebt_detail.setId(deb.getId());
-        if (!newdebt_detail.getAccounts().isActive()) {
-            RedirectView redirectView = new RedirectView();
+        Accounts acc = accountsService.findById(newdebt_detail.getAccounts().getId());
+        if (!acc.isActive()) {
             redirectView.setUrl("/debtor/detail/view-detail/" + deb.getDeptorId());
             redirectAttributes.addAttribute("report", "Warning: Your account is inactive!");
+            return redirectView;
         }
         detailDebtService.UpdateDebt(deb, newdebt_detail);
-
-        RedirectView redirectView = new RedirectView();
         redirectView.setUrl("/debtor/detail/view-detail/" + deb.getDeptorId());
         return redirectView;
     }
@@ -141,7 +130,7 @@ public class DetailDebtController {
         Debt_detail debt_detail = new Debt_detail();
         debt_detail.setDeptorId(idDebtor);
 
-        return dispathcher(model, debt_detail, "", itemsPage,
+        return dispathcher(model, debt_detail, itemsPage,
                 currentRequestMapping, filterType, filterValueStart,
                 filterValueEnd);
 
@@ -152,12 +141,9 @@ public class DetailDebtController {
         return users.getId();
     }
 
-    private String dispathcher(Model model, Debt_detail debt_detail,
-            String errorMessage, Page<Debt_detail> itemsPage,
+    private String dispathcher(Model model, Debt_detail debt_detail, Page<Debt_detail> itemsPage,
             String currentRequestMapping, String filterType, String filterValueStart,
             String filterValueEnd) {
-
-        model.addAttribute("errorMessage", "");
         model.addAttribute("listAccount",
                 accountsService.findAllByUserId(getIdUser()));
         model.addAttribute("debt_detail", debt_detail);

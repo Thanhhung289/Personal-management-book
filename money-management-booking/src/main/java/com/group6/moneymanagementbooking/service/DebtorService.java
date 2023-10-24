@@ -9,7 +9,7 @@ public interface DebtorService {
 
     public List<Debtor> findAll(int id);
 
-    public Debtor Save(Debtor debtor);
+    public boolean Save(Debtor debtor);
 
     public Debtor Update(Debtor debtor);
 
@@ -25,6 +25,6 @@ public interface DebtorService {
 
     public List<Debtor> getListOwner();
 
-    public List<Debtor> FilterDebtor(String filterType, String name, String filterValueStart, String filterValueEnd);
+    public List<Debtor> FilterDebtor(String filterType, String filterValueStart, String filterValueEnd);
 
 }

@@ -15,7 +15,6 @@ import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
-
 @Setter
 @Getter
 @Builder
@@ -29,6 +28,7 @@ public class Debtor {
     private int userId;
 
     private String name;
+
     private String address;
 
     @Column(unique = true)
@@ -36,8 +36,11 @@ public class Debtor {
 
     @Column(unique = true)
     private String email;
+
     private LocalDateTime date_create;
+
     private LocalDateTime date_update;
+
     private Double total;
 
     public Debtor(int id, int userId, String name, String address, String phone, String email,

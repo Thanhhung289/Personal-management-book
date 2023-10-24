@@ -28,6 +28,7 @@ public class BeforeAuthenticationFilter extends OncePerRequestFilter {
         this.accountsService = accountsService;
         this.usersService = usersServiceImpl;
     }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -36,7 +37,7 @@ public class BeforeAuthenticationFilter extends OncePerRequestFilter {
             double totalMoney = accountsService.getTotalBalance();
             request.setAttribute("totalMoney", totalMoney);
             Users u = usersService.getUserByEmail(email);
-            request.setAttribute("currentUser",UsersMapper.toUserDTOResponse(u));
+            request.setAttribute("currentUser", UsersMapper.toUserDTOResponse(u));
         }
         filterChain.doFilter(request, response);
     }
